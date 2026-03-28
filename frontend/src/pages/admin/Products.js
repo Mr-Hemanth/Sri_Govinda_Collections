@@ -21,7 +21,8 @@ export default function AdminProducts() {
     category: '1 Gram Gold',
     description: '',
     image: '',
-    stock: '10'
+    stock: '10',
+    isFeatured: false
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -85,7 +86,8 @@ export default function AdminProducts() {
       category: formData.category,
       description: formData.description,
       images: [formData.image],
-      stock: Number(formData.stock || 10)
+      stock: Number(formData.stock || 10),
+      isFeatured: formData.isFeatured || false
     };
 
     try {
@@ -96,7 +98,7 @@ export default function AdminProducts() {
       });
       if (res.ok) {
         fetchProducts();
-        setFormData({ name: '', price: '', originalPrice: '', category: '1 Gram Gold', description: '', image: '', stock: '10' });
+        setFormData({ name: '', price: '', originalPrice: '', category: '1 Gram Gold', description: '', image: '', stock: '10', isFeatured: false });
         setIsEditing(false);
         setEditId(null);
       }
@@ -111,7 +113,8 @@ export default function AdminProducts() {
       category: p.category,
       description: p.description || '',
       image: p.images?.[0] || '',
-      stock: String(p.stock || 10)
+      stock: String(p.stock || 10),
+      isFeatured: p.isFeatured || false
     });
     setIsEditing(true);
     setEditId(p.id);
@@ -141,7 +144,7 @@ export default function AdminProducts() {
           <h1 className="text-accent" style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', color: 'var(--color-primary)' }}>Inventory Catalog</h1>
           <p style={{ color: 'var(--color-gray-text)' }}>Manage your premium jewelry collections and stock levels.</p>
         </div>
-        <Button variant="primary" onClick={() => { setIsEditing(false); setFormData({ name: '', price: '', originalPrice: '', category: '1 Gram Gold', description: '', image: '', stock: '10' }); }}>
+        <Button variant="primary" onClick={() => { setIsEditing(false); setFormData({ name: '', price: '', originalPrice: '', category: '1 Gram Gold', description: '', image: '', stock: '10', isFeatured: false }); }}>
            Add New Product
         </Button>
       </div>
@@ -238,6 +241,18 @@ export default function AdminProducts() {
               <textarea placeholder="Describe the craftsmanship..." name="description" value={formData.description} onChange={handleChange} className="input-field" rows="3" style={{ resize: 'none' }}></textarea>
             </div>
 
+            <div className="flex items-center gap-3" style={{ padding: '0.5rem', backgroundColor: 'var(--color-ivory)', borderRadius: '12px', border: '1px solid var(--color-gray-border)' }}>
+               <input 
+                  type="checkbox" 
+                  id="isFeatured" 
+                  name="isFeatured" 
+                  checked={formData.isFeatured} 
+                  onChange={(e) => setFormData({...formData, isFeatured: e.target.checked})} 
+                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+               />
+               <label htmlFor="isFeatured" style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-primary)', cursor: 'pointer' }}>Showcase on Home Page (Featured)</label>
+            </div>
+
             <div className="flex-col gap-3" style={{ marginTop: '1rem' }}>
               <Button type="submit" style={{ width: '100%', padding: '1.2rem', fontSize: '1rem', borderRadius: '50px' }}>
                  {isEditing ? 'Confirm Updates' : 'Add to Catalog'}
@@ -262,12 +277,21 @@ export default function AdminProducts() {
                   <div style={{ width: '100%', height: '260px', overflow: 'hidden', position: 'relative' }}>
                     <img src={p.images?.[0]} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
-                       <span style={{
-                         padding: '0.3rem 0.8rem', fontSize: '0.65rem', fontWeight: '800', borderRadius: '50px', backgroundColor: 'rgba(255,255,255,0.9)', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '1px', boxShadow: 'var(--shadow-sm)'
-                       }}>
-                         {p.category}
-                       </span>
-                    </div>
+                        <span style={{
+                          padding: '0.3rem 0.8rem', fontSize: '0.65rem', fontWeight: '800', borderRadius: '50px', backgroundColor: 'rgba(255,255,255,0.9)', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '1px', boxShadow: 'var(--shadow-sm)'
+                        }}>
+                          {p.category}
+                        </span>
+                     </div>
+                     {p.isFeatured && (
+                        <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                           <span style={{
+                             padding: '0.3rem 0.8rem', fontSize: '0.65rem', fontWeight: '800', borderRadius: '50px', backgroundColor: 'var(--color-gold)', color: 'white', textTransform: 'uppercase', letterSpacing: '1px', boxShadow: 'var(--shadow-sm)'
+                           }}>
+                             Showcased
+                           </span>
+                        </div>
+                     )}
                   </div>
 
                   <div style={{ padding: '1.5rem' }}>

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import HeroBanner from '../components/ui/HeroBanner';
 import TrustBadges from '../components/ui/TrustBadges';
 import ProductCard from '../components/ui/ProductCard';
@@ -5,12 +6,28 @@ import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
-  const featuredProducts = [
-    { id: '1', name: 'Premium 1g Gold Necklace', category: '1 Gram Gold', price: 1500, images: ['https://images.unsplash.com/photo-1599643477873-beefa344dd1a?auto=format&fit=crop&q=80&w=400'] },
-    { id: '2', name: 'German Silver Antique Uruli', category: 'German Silver', price: 1200, images: ['https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=400'] },
-    { id: '3', name: 'Lord Venkateswara Idol', category: 'Gift Articles', price: 2500, images: ['https://images.unsplash.com/photo-1603525203792-c67be3005a39?auto=format&fit=crop&q=80&w=400'] },
-    { id: '4', name: 'Bridal Choker Set', category: 'Bridal Set', price: 3500, images: ['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=400'] }
-  ];
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products`);
+        if (res.ok) {
+          const allProducts = await res.json();
+          // Filter products that are featured
+          const featured = allProducts.filter(p => p.isFeatured).slice(0, 8);
+          // If no products are specifically featured, show the 8 newest products as a fallback
+          setFeaturedProducts(featured.length > 0 ? featured : allProducts.slice(0, 8));
+        }
+      } catch (e) {
+        console.error("Home showcase fetch failed", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
 
   const categories = [
     { name: '1 Gram Gold', img: 'https://images.unsplash.com/photo-1601121141461-9d6647b0a002?auto=format&fit=crop&q=80&w=600', desc: 'Divine handcrafted pieces inspired by ancient architecture.' },
@@ -64,9 +81,15 @@ export default function Home() {
             </Link>
           </div>
           <div className="product-grid">
-            {featuredProducts.map(p => (
-              <ProductCard key={p.id} product={p} />
-            ))}
+            {loading ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="animate-pulse" style={{ height: '400px', backgroundColor: '#eee', borderRadius: '12px' }}></div>
+              ))
+            ) : (
+              featuredProducts.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))
+            )}
           </div>
         </div>
       </section>

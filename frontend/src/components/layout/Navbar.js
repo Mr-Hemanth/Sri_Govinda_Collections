@@ -1,14 +1,16 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Menu, User, Search, LogOut, Heart, X } from 'lucide-react';
+import { ShoppingBag, Menu, User, Search, LogOut, Heart, X, ArrowLeft } from 'lucide-react';
 import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { useLocation } from 'react-router-dom';
 import { CartContext } from '../../context/CartContext';
 import { WishlistContext } from '../../context/WishlistContext';
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { cart } = useContext(CartContext);
   const { wishlist } = useContext(WishlistContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,8 +59,17 @@ export default function Navbar() {
     }}>
       <div className="container navbar-container">
         
-        {/* Left: Logo */}
+        {/* Left: Logo & Mobile Back Arrow */}
         <div className="navbar-left">
+          {location.pathname !== '/' && location.pathname !== '/home' && (
+            <button 
+              onClick={() => navigate(-1)} 
+              className="mobile-back-btn" 
+              style={{ background: 'none', border: 'none', color: 'var(--color-primary)', display: 'none', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', marginLeft: '-0.5rem', marginRight: '0.5rem', cursor: 'pointer' }}
+            >
+              <ArrowLeft size={24} />
+            </button>
+          )}
           <Link to="/" className="navbar-logo">
             <img src="/logo.png" alt="Sri Govinda Collections" style={{ height: isScrolled ? '40px' : '55px', width: isScrolled ? '40px' : '55px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)', transition: 'var(--transition-standard)' }} />
           </Link>
@@ -253,6 +264,11 @@ export default function Navbar() {
       }
       .desktop-nav, .desktop-auth { display: none !important; }
       .mobile-only { display: block; }
+      @media (max-width: 1023px) {
+        .mobile-back-btn {
+          display: flex !important;
+        }
+      }
       @media (min-width: 1024px) {
         .navbar-container {
             display: grid;

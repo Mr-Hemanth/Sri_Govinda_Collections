@@ -10,7 +10,11 @@ import { LogOut, MapPin, Plus, Trash2, Edit2, User, ShoppingBag, Package, Settin
 
 export default function Profile() {
   const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState({ name: '', phone: '', avatarUrl: '', addresses: [] });
+  const [profile, setProfile] = useState({ 
+    name: '', phone: '', 
+    dob: '', 
+    avatarUrl: '', addresses: [] 
+  });
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('orders'); // 'orders', 'addresses', 'settings'
@@ -44,6 +48,7 @@ export default function Profile() {
         setProfile({
           name: data.name || auth.currentUser?.displayName || '',
           phone: data.phone || '',
+          dob: data.dob || '',
           avatarUrl: data.avatarUrl || '',
           addresses: data.addresses || []
         });
@@ -114,7 +119,7 @@ export default function Profile() {
   const handleAddAddress = () => {
     setProfile(prev => ({
       ...prev,
-      addresses: [...prev.addresses, { label: 'New Address', street: '', city: '', state: '', zip: '' }]
+      addresses: [...prev.addresses, { label: 'New Address', recipientName: '', phone: '', street: '', landmark: '', city: '', state: '', zip: '' }]
     }));
     setExpandedAddresses(prev => ({ ...prev, [profile.addresses.length]: true }));
   };
@@ -383,8 +388,8 @@ export default function Profile() {
                     <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', margin: '0 0 0.5rem' }}>Shipping Addresses</h2>
                     <p style={{ color: 'var(--color-gray-text)', margin: 0 }}>Manage your delivery locations for faster checkout.</p>
                   </div>
-                  <Button variant="outline" onClick={handleAddAddress} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Plus size={18} /> Add New Address
+                  <Button variant="outline" onClick={handleAddAddress} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.5rem 1rem', fontSize: '0.8rem', borderRadius: '50px' }}>
+                    <Plus size={16} /> Add New Address
                   </Button>
                 </div>
                 
@@ -409,29 +414,43 @@ export default function Profile() {
                          </div>
 
                          {expandedAddresses[idx] && (
-                           <div className="animate-slide-down" style={{ padding: '1.5rem' }}>
+                           <div className="animate-slide-up" style={{ padding: '1.5rem' }}>
                              <div className="flex-col gap-4">
+                                <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                   <div>
+                                      <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>Label</label>
+                                      <input className="input-field" value={addr.label} onChange={e => handleUpdateAddress(idx, 'label', e.target.value)} placeholder="e.g. Home, Office" style={{ padding: '0.8rem' }} />
+                                   </div>
+                                   <div>
+                                      <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>Recipient Name</label>
+                                      <input className="input-field" value={addr.recipientName || ''} onChange={e => handleUpdateAddress(idx, 'recipientName', e.target.value)} placeholder="Full Name" style={{ padding: '0.8rem' }} />
+                                   </div>
+                                </div>
                                 <div>
-                                   <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>Label</label>
-                                   <input className="input-field" value={addr.label} onChange={e => handleUpdateAddress(idx, 'label', e.target.value)} placeholder="e.g. Home, Office" />
+                                   <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>Delivery Phone</label>
+                                   <input className="input-field" value={addr.phone || ''} onChange={e => handleUpdateAddress(idx, 'phone', e.target.value)} placeholder="Contact Number" style={{ padding: '0.8rem' }} />
                                 </div>
                                 <div>
                                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>Street Address</label>
-                                   <input className="input-field" value={addr.street} onChange={e => handleUpdateAddress(idx, 'street', e.target.value)} />
+                                   <input className="input-field" value={addr.street} onChange={e => handleUpdateAddress(idx, 'street', e.target.value)} style={{ padding: '0.8rem' }} />
+                                </div>
+                                <div>
+                                   <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>Landmark / Area</label>
+                                   <input className="input-field" value={addr.landmark || ''} onChange={e => handleUpdateAddress(idx, 'landmark', e.target.value)} placeholder="Near temple, building name etc." style={{ padding: '0.8rem' }} />
                                 </div>
                                 <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                    <div>
                                       <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>City</label>
-                                      <input className="input-field" value={addr.city} onChange={e => handleUpdateAddress(idx, 'city', e.target.value)} />
+                                      <input className="input-field" value={addr.city} onChange={e => handleUpdateAddress(idx, 'city', e.target.value)} style={{ padding: '0.8rem' }} />
                                    </div>
                                    <div>
                                       <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>PIN</label>
-                                      <input className="input-field" value={addr.zip} onChange={e => handleUpdateAddress(idx, 'zip', e.target.value)} />
+                                      <input className="input-field" value={addr.zip} onChange={e => handleUpdateAddress(idx, 'zip', e.target.value)} style={{ padding: '0.8rem' }} />
                                    </div>
                                 </div>
                                 <div>
                                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', marginBottom: '0.4rem' }}>State</label>
-                                   <input className="input-field" value={addr.state} onChange={e => handleUpdateAddress(idx, 'state', e.target.value)} />
+                                   <input className="input-field" value={addr.state} onChange={e => handleUpdateAddress(idx, 'state', e.target.value)} style={{ padding: '0.8rem' }} />
                                 </div>
                              </div>
                            </div>
@@ -473,18 +492,22 @@ export default function Profile() {
                                 <input required className="input-field" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} style={{ padding: '1rem' }} />
                              </div>
                              <div className="flex-col gap-2">
-                                <label style={{ fontWeight: '800', fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--color-primary)', letterSpacing: '1px' }}>Contact Number</label>
+                                <label style={{ fontWeight: '800', fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--color-primary)', letterSpacing: '1px' }}>Primary Phone</label>
                                 <input required className="input-field" value={profile.phone} onChange={e => setProfile({...profile, phone: e.target.value})} style={{ padding: '1rem' }} />
                              </div>
-                             <div className="flex-col gap-2" style={{ gridColumn: 'span 2' }}>
-                                <label style={{ fontWeight: '800', fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--color-primary)', letterSpacing: '1px' }}>Avatar Source</label>
+                             <div className="flex-col gap-2">
+                                <label style={{ fontWeight: '800', fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--color-primary)', letterSpacing: '1px' }}>Date of Birth</label>
+                                <input type="date" className="input-field" value={profile.dob || ''} onChange={e => setProfile({...profile, dob: e.target.value})} style={{ padding: '0.9rem' }} />
+                             </div>
+                             <div className="flex flex-col gap-2" style={{ gridColumn: 'span 2' }}>
+                                <label style={{ fontWeight: '800', fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--color-primary)', letterSpacing: '1px' }}>Profile Photo</label>
                                 <div className="flex items-center gap-4">
-                                  <Button type="button" variant="outline" onClick={handleAvatarClick} style={{ flex: 1, padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                    <Camera size={18} /> Upload from Device
-                                  </Button>
-                                  <div style={{ color: 'var(--color-gray-text)', fontSize: '0.8rem' }}>Or use a URL below</div>
+                                   <Button type="button" variant="outline" onClick={handleAvatarClick} style={{ padding: '0.6rem 1.2rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '50px' }}>
+                                      <Camera size={14} /> Change Photo
+                                   </Button>
+                                   <p style={{ color: 'var(--color-gray-text)', fontSize: '0.75rem', margin: 0 }}>Upload a high-quality portrait from your device.</p>
                                 </div>
-                                <input className="input-field" value={profile.avatarUrl?.startsWith('data:image') ? 'Linked from Device' : profile.avatarUrl} onChange={e => setProfile({...profile, avatarUrl: e.target.value})} style={{ padding: '1rem', marginTop: '0.5rem' }} placeholder="External image URL..." />
+                                <input type="file" ref={fileInputRef} onChange={handleAvatarChange} style={{ display: 'none' }} accept="image/*" />
                              </div>
                           </div>
                           <div style={{ borderTop: '1px solid var(--color-gray-border)', paddingTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>

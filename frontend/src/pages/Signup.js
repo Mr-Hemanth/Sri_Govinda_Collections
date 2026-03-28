@@ -7,6 +7,7 @@ import Button from '../components/ui/Button';
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -14,7 +15,23 @@ export default function Signup() {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, { displayName: name });
+      const user = userCredential.user;
+      await updateProfile(user, { displayName: name });
+      
+      // Initialize Firestore profile via backend
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.uid}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name, 
+          email, 
+          phone,
+          createdAt: new Date().toISOString(),
+          addresses: [],
+          usedCoupons: []
+        })
+      });
+
       navigate('/home');
     } catch (err) {
       alert("Signup failed. " + err.message);
@@ -32,6 +49,10 @@ export default function Signup() {
         <div className="flex-col gap-2">
           <label style={{ fontSize: '0.85rem', fontWeight: '600' }}>Email Address</label>
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email" className="input-field" required />
+        </div>
+        <div className="flex-col gap-2">
+          <label style={{ fontSize: '0.85rem', fontWeight: '600' }}>Primary Phone (WhatsApp preferred)</label>
+          <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="e.g. +91 98765 43210" className="input-field" required />
         </div>
         <div className="flex-col gap-2">
           <label style={{ fontSize: '0.85rem', fontWeight: '600' }}>Password</label>
