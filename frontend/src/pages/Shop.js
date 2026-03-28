@@ -94,32 +94,34 @@ export default function Shop() {
               className="input-field"
               style={{ paddingLeft: '3.5rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '1rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
             />
-            <Button type="submit" style={{ position: 'absolute', right: '6px', top: '6px', bottom: '6px', borderRadius: '50px', padding: '0 2rem', fontSize: '0.9rem' }}>Search</Button>
+            <Button type="submit" style={{ position: 'absolute', right: '6px', top: '6px', bottom: '6px', borderRadius: '50px', padding: '0 1rem', fontSize: '0.85rem' }}>Search</Button>
           </form>
           
-          <div className="flex items-center gap-4" style={{ flex: '1 1 200px' }}>
-             <select 
-               value={category} 
-               onChange={(e) => setCategory(e.target.value)}
-               className="input-field" 
-               style={{ cursor: 'pointer', padding: '1rem 1.5rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '1rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
-             >
-               <option disabled value="">Category</option>
-               {categories.map(c => <option key={c} value={c}>{c}</option>)}
-             </select>
-          </div>
+          <div className="flex gap-2" style={{ display: 'flex', flex: '1 1 100%', width: '100%' }}>
+            <div className="flex items-center" style={{ flex: 1 }}>
+               <select 
+                 value={category} 
+                 onChange={(e) => setCategory(e.target.value)}
+                 className="input-field" 
+                 style={{ cursor: 'pointer', padding: '0.75rem 1rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '0.9rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
+               >
+                 <option disabled value="">Category</option>
+                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
+               </select>
+            </div>
 
-          <div className="flex items-center gap-4" style={{ flex: '1 1 200px' }}>
-             <select 
-               value={sort} 
-               onChange={(e) => setSort(e.target.value)}
-               className="input-field" 
-               style={{ cursor: 'pointer', padding: '1rem 1.5rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '1rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
-             >
-               <option value="newest">Newest Arrivals</option>
-               <option value="price-low">Price: Low to High</option>
-               <option value="price-high">Price: High to Low</option>
-             </select>
+            <div className="flex items-center" style={{ flex: 1 }}>
+               <select 
+                 value={sort} 
+                 onChange={(e) => setSort(e.target.value)}
+                 className="input-field" 
+                 style={{ cursor: 'pointer', padding: '0.75rem 1rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '0.9rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
+               >
+                 <option value="newest">Newest</option>
+                 <option value="price-low">Price: Low</option>
+                 <option value="price-high">Price: High</option>
+               </select>
+            </div>
           </div>
         </div>
       </div>
