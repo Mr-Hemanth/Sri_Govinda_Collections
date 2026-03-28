@@ -14,21 +14,31 @@ const firebaseConfig = {
 
 let app, auth, analytics;
 
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  if (typeof window !== 'undefined') {
-    analytics = getAnalytics(app);
+// Check if critical config is actually present
+const isConfigValid = !!process.env.REACT_APP_FIREBASE_PROJECT_ID;
+
+if (isConfigValid) {
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    if (typeof window !== 'undefined') {
+      analytics = getAnalytics(app);
+    }
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
   }
-} catch (error) {
-  console.warn("Firebase config is missing or invalid. Auth will not work.", error);
-  // Mock auth object for development if config is empty
+}
+
+// Fallback / Mock Auth to prevent total app failure if config is missing
+if (!auth) {
+  console.warn("⚠️ Firebase is NOT configured. Auth features will be disabled.");
   auth = {
     currentUser: null,
     onAuthStateChanged: (cb) => { cb(null); return () => {}; },
-    signInWithEmailAndPassword: async () => { throw new Error("Firebase not configured"); },
+    signInWithEmailAndPassword: async () => { throw new Error("Authentication is currently unavailable (Missing Config)"); },
+    createUserWithEmailAndPassword: async () => { throw new Error("Authentication is currently unavailable (Missing Config)"); },
     signOut: async () => {}
-  }
+  };
 }
 
 export { app, auth };
