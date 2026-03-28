@@ -14,6 +14,8 @@ export default function Checkout() {
   const [product, setProduct] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', address: '' });
   const [savedAddresses, setSavedAddresses] = useState([]);
   
@@ -173,7 +175,7 @@ export default function Checkout() {
           orderId = data.id;
       } catch (err) {
           console.error("API error", err);
-          alert("Connection error. Please try again.");
+          alert("Server is currently waking up from a deep sleep (Cold Start). Please wait 10-15 seconds and try once more. Your selection is safe!");
           setLoading(false);
           return;
       }
@@ -208,12 +210,22 @@ ${discount > 0 ? `Coupon (${discountInfo?.code || couponCode}): -₹${discount}\
 Please visit the tracking link above to scan the UPI QR code and submit your UTR number for instant confirmation. Thank you!`;
 
       if (isCartCheckout) clearCart();
-      window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
+      const waUrl = `https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`;
       
-      if (orderId) {
-        navigate(`/track?id=${orderId}`);
+      setSuccessMsg(waUrl);
+      setOrderSuccess(true);
+
+      // Mobile redirection is safer with location.assign
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.assign(waUrl);
       } else {
-        navigate('/shop');
+        window.open(waUrl, '_blank');
+        if (orderId) {
+          navigate(`/track?id=${orderId}`);
+        } else {
+          navigate('/shop');
+        }
       }
     } catch (error) {
       alert("Something went wrong. Please try again.");
@@ -221,6 +233,28 @@ Please visit the tracking link above to scan the UPI QR code and submit your UTR
       setLoading(false);
     }
   };
+
+  if (orderSuccess) {
+    return (
+      <div className="container section-padding text-center animate-fade-in" style={{ maxWidth: '600px', minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <header style={{ marginBottom: '3rem' }}>
+          <h1 style={{ fontSize: '3rem', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Order Initialized!</h1>
+          <p style={{ color: 'var(--color-gray-dark)', fontSize: '1.2rem', lineHeight: '1.6' }}>
+            We've successfully created your order in our registry.
+          </p>
+        </header>
+        <div className="card glass" style={{ padding: '3rem', border: '1px solid var(--color-gold)' }}>
+          <p style={{ marginBottom: '2rem', fontWeight: '500' }}>Redirecting to WhatsApp for final confirmation...</p>
+          <a href={successMsg} className="btn-primary" style={{ display: 'inline-block', width: '100%', padding: '1.2rem', borderRadius: '50px', textDecoration: 'none', textAlign: 'center' }}>
+             Open WhatsApp Manually
+          </a>
+          <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#888' }}>
+            If WhatsApp doesn't open automatically, please click the button above to share your order details with us.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (!product && cart.length === 0) return null;
 

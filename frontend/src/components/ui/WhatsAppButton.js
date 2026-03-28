@@ -6,7 +6,12 @@ export default function WhatsAppButton() {
   
   const handleWhatsAppClick = () => {
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`;
-    window.open(url, '_blank');
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.assign(url);
+    } else {
+      window.open(url, '_blank');
+    }
   };
 
   return (

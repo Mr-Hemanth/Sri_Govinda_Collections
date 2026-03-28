@@ -51,7 +51,7 @@ export default function Home() {
              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', marginBottom: '1.5rem', color: 'var(--color-primary)' }}>Shop by Category</h2>
              <p style={{ color: 'var(--color-gray-dark)', fontSize: '1.25rem', fontWeight: '400', opacity: 0.9 }}>Find the perfect piece for every divine occasion.</p>
           </div>
-        
+      
           <div className="grid gap-12" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
             {categories.map(cat => (
               <Link key={cat.name} to={`/shop?category=${encodeURIComponent(cat.name)}`} className="card" style={{ height: '600px', position: 'relative', overflow: 'hidden', padding: 0 }}>
