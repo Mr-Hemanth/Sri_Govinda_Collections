@@ -53,23 +53,19 @@ export default function Navbar() {
       backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.85)' : 'transparent',
       backdropFilter: isScrolled ? 'blur(16px)' : 'none',
       borderBottom: isScrolled ? '1px solid var(--color-gray-border)' : '1px solid transparent',
-      padding: isScrolled ? '0.75rem 0' : '1.5rem 0'
+      padding: isScrolled ? '0.5rem 0' : '1rem 0'
     }}>
-      <div className="container" style={{ 
-        display: 'grid', 
-        gridTemplateColumns: '1fr auto 1fr', 
-        alignItems: 'center'
-      }}>
+      <div className="container navbar-container">
         
         {/* Left: Logo */}
-        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Link to="/" className="navbar-logo" style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="Sri Govinda Collections" style={{ height: isScrolled ? '50px' : '70px', width: isScrolled ? '50px' : '70px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)', transition: 'var(--transition-standard)' }} />
+        <div className="navbar-left">
+          <Link to="/" className="navbar-logo">
+            <img src="/logo.png" alt="Sri Govinda Collections" style={{ height: isScrolled ? '40px' : '55px', width: isScrolled ? '40px' : '55px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)', transition: 'var(--transition-standard)' }} />
           </Link>
         </div>
         
         {/* Center: Desktop Nav */}
-        <nav className="desktop-nav" style={{ display: 'flex', gap: '2.5rem', justifyContent: 'center' }}>
+        <nav className="desktop-nav">
           <Link to="/home" className="nav-link">Store</Link>
           <Link to="/shop" className="nav-link">Catalogue</Link>
           <Link to="/offers" className="nav-link">Offers</Link>
@@ -79,48 +75,59 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Icons & Member Actions */}
-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Link to="/shop" style={{ color: 'var(--color-primary)', transition: 'var(--transition-fast)' }} className="icon-link desktop-nav" title="Search">
+        <div className="navbar-right">
+          <Link to="/shop" style={{ color: 'var(--color-primary)' }} className="icon-link desktop-nav" title="Search">
             <Search size={20} strokeWidth={1.5} />
           </Link>
 
           {user ? (
             <>
-              <Link to="/wishlist" style={{ color: 'var(--color-primary)', position: 'relative', transition: 'var(--transition-fast)' }} className="icon-link" title="Wishlist">
+              <Link to="/wishlist" style={{ color: 'var(--color-primary)', position: 'relative' }} className="icon-link" title="Wishlist">
                 <Heart size={20} strokeWidth={1.5} />
                 {wishlist.length > 0 && <span style={{ ...badgeStyle }}>{wishlist.length}</span>}
               </Link>
 
-              <Link to="/cart" style={{ color: 'var(--color-primary)', position: 'relative', transition: 'var(--transition-fast)' }} className="icon-link" title="Shopping Cart">
+              <Link to="/cart" style={{ color: 'var(--color-primary)', position: 'relative' }} className="icon-link" title="Shopping Cart">
                 <ShoppingBag size={20} strokeWidth={1.5} />
                 {cart.reduce((sum, i) => sum + i.quantity, 0) > 0 && <span style={{ ...badgeStyle }}>{cart.reduce((sum, i) => sum + i.quantity, 0)}</span>}
               </Link>
               
-              <Link to={user.email === process.env.REACT_APP_ADMIN_EMAIL ? "/admin" : "/profile"} style={{ color: 'var(--color-primary)', transition: 'var(--transition-fast)' }} className="icon-link" title="My Account">
+              <Link to={user.email === process.env.REACT_APP_ADMIN_EMAIL ? "/admin" : "/profile"} style={{ color: 'var(--color-primary)' }} className="icon-link" title="My Account">
                 <User size={20} strokeWidth={1.5} />
               </Link>
 
-              <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', transition: 'var(--transition-fast)' }} className="icon-link desktop-nav" title="Logout">
+              <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer' }} className="icon-link desktop-nav" title="Logout">
                 <LogOut size={20} strokeWidth={1.5} />
               </button>
             </>
           ) : (
-            <div className="desktop-auth" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <Link to="/login" className="nav-link" style={{ fontSize: '0.85rem', fontWeight: '600', letterSpacing: '1px' }}>
-                LOGIN
+            <>
+              <div className="desktop-auth" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <Link to="/login" className="nav-link" style={{ fontSize: '0.85rem', fontWeight: '600', letterSpacing: '1px' }}>
+                  LOGIN
+                </Link>
+                <Link to="/signup" className="btn-primary" style={{ padding: '0.6rem 1.8rem', fontSize: '0.8rem', borderRadius: '50px' }}>
+                  SIGN UP
+                </Link>
+              </div>
+              <Link to="/login" className="icon-link mobile-only" title="Login">
+                <User size={20} strokeWidth={1.5} style={{ color: 'var(--color-primary)' }} />
               </Link>
-              <Link to="/signup" className="btn-primary" style={{ padding: '0.6rem 1.8rem', fontSize: '0.8rem', borderRadius: '50px' }}>
-                SIGN UP
-              </Link>
-            </div>
+            </>
           )}
           
           <button 
             onClick={() => setMobileMenuOpen(true)}
-            style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer' }} 
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              color: 'var(--color-primary)', 
+              cursor: 'pointer',
+              marginLeft: 'auto' /* Force to extreme right */
+            }} 
             className="mobile-menu-btn"
           >
-             <Menu size={24} strokeWidth={1.5} />
+             <Menu size={28} strokeWidth={1.5} />
           </button>
         </div>
       </div>
@@ -227,10 +234,36 @@ export default function Navbar() {
         font-weight: 400;
         letter-spacing: 0.02em;
       }
+      .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        padding: 0 1rem; /* Tighter padding for mobile */
+      }
+      .navbar-left {
+        display: flex;
+        align-items: center;
+      }
+      .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-left: auto; /* Push group to right */
+      }
       .desktop-nav, .desktop-auth { display: none !important; }
+      .mobile-only { display: block; }
       @media (min-width: 1024px) {
-        .desktop-nav, .desktop-auth { display: flex !important; }
-        .mobile-menu-btn { display: none !important; }
+        .navbar-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            padding: 0 2rem;
+        }
+        .navbar-left { justify-content: flex-start; }
+        .navbar-right { justify-content: flex-end; margin-left: 0; }
+        .desktop-nav { display: flex !important; gap: 2.5rem; justify-content: center; }
+        .desktop-auth { display: flex !important; }
+        .mobile-menu-btn, .mobile-only { display: none !important; }
       }
     `}</style>
     </>

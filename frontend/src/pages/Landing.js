@@ -28,22 +28,22 @@ export default function Landing() {
         }}></div>
 
         <div className="max-w-narrow flex-col items-center" style={{ zIndex: 1, gap: '2.5rem' }}>
-          <div className="animate-float" style={{ marginBottom: '1rem' }}>
+          <div className="animate-float mobile-hide-logo" style={{ marginBottom: '1rem' }}>
              <img src="/logo.png" alt="Logo" style={{ width: '140px', height: '140px', borderRadius: '50%', border: '4px solid var(--color-gold)', boxShadow: 'var(--shadow-lg)' }} />
           </div>
 
           <div>
             <h1 style={{ 
-              fontFamily: 'var(--font-heading)', fontSize: 'clamp(3.5rem, 10vw, 6.5rem)', color: 'var(--color-primary)',
-              lineHeight: '1', letterSpacing: '-0.02em', marginBottom: '1.5rem'
+              fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 10vw, 5rem)', color: 'var(--color-primary)',
+              lineHeight: '1.1', letterSpacing: '-0.02em', marginBottom: '1rem'
             }}>
               Sri Govinda<br />
               <span style={{ fontStyle: 'italic', fontWeight: '400', opacity: 0.85 }}>Collections</span>
             </h1>
             
             <p className="text-balance" style={{ 
-              fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', color: 'var(--color-gray-dark)', 
-              fontWeight: '500', letterSpacing: '0.04em', lineHeight: '1.6', maxWidth: '700px', margin: '0 auto 4rem'
+              fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: 'var(--color-gray-dark)', 
+              fontWeight: '500', letterSpacing: '0.04em', lineHeight: '1.5', maxWidth: '700px', margin: '0 auto 2.5rem'
             }}>
               Where Divine Craftsmanship Meets Timeless Elegance. <br className="desktop-nav" /> 
               Curating the finest German Silver and 1 Gram Gold for the Discerning.

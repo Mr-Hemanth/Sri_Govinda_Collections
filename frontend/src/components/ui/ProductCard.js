@@ -54,25 +54,24 @@ export default function ProductCard({ product }) {
         />
       </Link>
       
-      <div className="flex-col" style={{ padding: '1.25rem 1.5rem', flex: 1, justifyContent: 'space-between' }}>
-        <div style={{ marginBottom: '1rem' }}>
-          <p style={{ color: 'var(--color-primary)', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem', opacity: 0.8 }}>{product.category}</p>
-          <h3 style={{ fontSize: '1.15rem', marginBottom: '0.5rem', fontFamily: 'var(--font-heading)', lineHeight: '1.3' }}>
+      <div className="flex-col" style={{ padding: '1rem 1.25rem', flex: 1, justifyContent: 'space-between' }}>
+        <div style={{ padding: 'clamp(1rem, 2vw, 1.5rem)', paddingBottom: '0.5rem' }}>
+          <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', fontFamily: 'var(--font-heading)', lineHeight: '1.2' }} className="mobile-text-sm">
             <Link to={`/product/${product.id}`} style={{ color: 'var(--color-black)' }}>
               {product.name}
             </Link>
           </h3>
         </div>
         
-        <div className="flex items-center justify-between" style={{ marginTop: 'auto', gap: '1rem', flexWrap: 'wrap' }}>
-          <div className="flex items-center gap-2">
-            <span style={{ fontWeight: '400', fontSize: '1.4rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>₹{product.price}</span>
+        <div className="flex items-center justify-between" style={{ marginTop: 'auto', gap: '0.5rem', flexWrap: 'wrap', padding: '0 1rem 1rem' }}>
+          <div className="flex items-center gap-1">
+            <span style={{ fontWeight: '400', fontSize: '1.2rem', color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>₹{product.price}</span>
             {product.originalPrice > product.price && (
-              <span style={{ fontSize: '1.1rem', color: '#777', textDecoration: 'line-through', fontWeight: '500' }}>₹{product.originalPrice}</span>
+              <span style={{ fontSize: '0.9rem', color: '#777', textDecoration: 'line-through', fontWeight: '500' }}>₹{product.originalPrice}</span>
             )}
           </div>
-          <Button onClick={handleAddCart} variant="primary" style={{ padding: '0.6rem 1.2rem', fontSize: '0.8rem', borderRadius: '50px', fontWeight: '700' }}>
-            ADD TO BAG
+          <Button onClick={handleAddCart} variant="primary" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', borderRadius: '50px', fontWeight: '700' }} className="mobile-btn-sm">
+            ADD
           </Button>
         </div>
       </div>
@@ -92,9 +91,9 @@ export default function ProductCard({ product }) {
         .premium-card-hover:hover .card-img-zoom {
            transform: scale(1.1);
         }
-        .wishlist-btn:hover {
-           background: white !important;
-           transform: scale(1.1);
+        @media (max-width: 480px) {
+          .mobile-text-sm { font-size: 0.9rem !important; }
+          .mobile-btn-sm { padding: 0.4rem 0.8rem !important; font-size: 0.7rem !important; }
         }
       `}</style>
     </div>
