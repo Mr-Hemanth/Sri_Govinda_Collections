@@ -313,11 +313,57 @@ th {
 }
 
 @media (max-width: 768px) {
+  /* Profile Page Mobile Refinements */
+  .profile-header-stack {
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    text-align: center;
+  }
+
+  .profile-header-info {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    align-items: center !important;
+    width: 100%;
+  }
+
+  .profile-stats-row {
+    border-left: none !important;
+    padding-left: 0 !important;
+    width: 100%;
+    justify-content: center !important;
+    gap: 1.5rem !important;
+  }
+
+  .profile-text-center {
+    text-align: center;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .order-row-mobile {
+    padding: 1rem !important;
+  }
+
+  .order-info-mobile {
+    gap: 0.75rem !important;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
   .product-grid {
     grid-template-columns: repeat(2, 1fr); /* 2 items on mobile */
     gap: 1.5rem;
     padding: 0 1rem;
   }
+}
+
+.hover-gold:hover {
+  border-color: var(--color-gold-solid) !important;
+  background-color: var(--color-ivory) !important;
 }
 
 @media (max-width: 480px) {

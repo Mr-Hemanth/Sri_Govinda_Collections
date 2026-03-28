@@ -161,66 +161,69 @@ export default function Profile() {
   if (!user) return <div className="container" style={{ padding: '8rem 0', textAlign: 'center' }}>Loading your divine dashboard...</div>;
 
   return (
-    <div className="container animate-fade-in" style={{ maxWidth: '1400px', paddingTop: '4rem', paddingBottom: '6rem' }}>
+    <div className="container animate-fade-in" style={{ maxWidth: '1400px', paddingTop: 'clamp(2rem, 5vw, 4rem)', paddingBottom: '6rem', paddingLeft: 'clamp(1rem, 3vw, 2rem)', paddingRight: 'clamp(1rem, 3vw, 2rem)' }}>
       
       {/* Royal Dashboard Header */}
       <div className="flex-col gap-6" style={{ marginBottom: '3rem' }}>
-        <div className="flex justify-between items-center" style={{ padding: '2.5rem', backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-gray-border)', boxShadow: 'var(--shadow-sm)' }}>
-          <div className="flex items-center gap-8">
+        <div className="flex justify-between items-center profile-header-stack" style={{ padding: 'clamp(1.25rem, 4vw, 2.5rem)', backgroundColor: 'var(--color-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-gray-border)', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="flex items-center gap-6 profile-header-info">
             <div style={{ position: 'relative', cursor: 'pointer' }} onClick={handleAvatarClick} className="avatar-container">
               {profile.avatarUrl ? (
-                <img src={profile.avatarUrl} alt="Profile" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
+                <img src={profile.avatarUrl} alt="Profile" style={{ width: 'clamp(70px, 15vw, 100px)', height: 'clamp(70px, 15vw, 100px)', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
               ) : (
-                <div style={{ width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 'bold', border: '2px solid var(--color-gold)' }}>
+                <div style={{ width: 'clamp(70px, 15vw, 100px)', height: 'clamp(70px, 15vw, 100px)', borderRadius: '50%', backgroundColor: 'var(--color-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontWeight: 'bold', border: '2px solid var(--color-gold)' }}>
                   {profile.name ? profile.name[0].toUpperCase() : user.email[0].toUpperCase()}
                 </div>
               )}
-              <div className="avatar-overlay" style={{ position: 'absolute', bottom: '0', right: '0', backgroundColor: 'var(--color-gold)', color: 'white', padding: '0.4rem', borderRadius: '50%', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Camera size={14} />
+              <div className="avatar-overlay" style={{ position: 'absolute', bottom: '0', right: '0', backgroundColor: 'var(--color-gold)', color: 'white', padding: '0.3rem', borderRadius: '50%', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Camera size={12} />
               </div>
               <input type="file" ref={fileInputRef} onChange={handleAvatarChange} style={{ display: 'none' }} accept="image/*" />
             </div>
-            <div>
-              <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.2rem', margin: 0, color: 'var(--color-primary)' }}>{profile.name || user.email.split('@')[0]}</h1>
-              <p style={{ color: 'var(--color-gray-text)', fontSize: '0.95rem', fontWeight: '500', marginTop: '0.2rem' }}>{user.email}</p>
+            <div className="profile-text-center">
+              <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', margin: 0, color: 'var(--color-primary)' }}>{profile.name || user.email.split('@')[0]}</h1>
+              <p style={{ color: 'var(--color-gray-text)', fontSize: 'clamp(0.85rem, 2vw, 0.95rem)', fontWeight: '500', marginTop: '0.2rem' }}>{user.email}</p>
             </div>
           </div>
           
-          <div className="flex gap-12" style={{ borderLeft: '1px solid var(--color-gray-border)', paddingLeft: '4rem' }}>
+          <div className="flex gap-8 profile-stats-row" style={{ borderLeft: '1px solid var(--color-gray-border)', paddingLeft: 'clamp(1rem, 5vw, 4rem)' }}>
             <div className="text-center">
-              <p style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-gold)', fontWeight: '800', marginBottom: '0.3rem' }}>Total Orders</p>
-              <p style={{ fontSize: '1.6rem', fontWeight: '700', margin: 0 }}>{orders.length}</p>
+              <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-gold)', fontWeight: '800', marginBottom: '0.2rem' }}>Orders</p>
+              <p style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', fontWeight: '700', margin: 0 }}>{orders.length}</p>
             </div>
             <div className="text-center">
-              <p style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-gold)', fontWeight: '800', marginBottom: '0.3rem' }}>Addresses</p>
-              <p style={{ fontSize: '1.6rem', fontWeight: '700', margin: 0 }}>{profile.addresses.length}</p>
+              <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-gold)', fontWeight: '800', marginBottom: '0.2rem' }}>Addresses</p>
+              <p style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', fontWeight: '700', margin: 0 }}>{profile.addresses.length}</p>
             </div>
             <button 
               onClick={handleLogout} 
-              style={{ background: 'none', border: '1px solid var(--color-gray-border)', padding: '0.7rem 1.1rem', borderRadius: '50px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600', color: 'var(--color-primary)', transition: 'all 0.3s ease', fontSize: '0.9rem' }}
+              style={{ background: 'none', border: '1px solid var(--color-gray-border)', padding: '0.5rem 0.9rem', borderRadius: '50px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: '600', color: 'var(--color-primary)', transition: 'all 0.3s ease', fontSize: '0.85rem' }}
+              className="logout-button-compact"
             >
-              <LogOut size={16} /> Logout
+              <LogOut size={16} /> <span className="hide-mobile">Logout</span>
             </button>
           </div>
         </div>
 
-        {/* Horizontal Navigation */}
-        <div className="flex gap-8" style={{ borderBottom: '1px solid var(--color-gray-border)', padding: '0 1rem' }}>
-          {[
-            { id: 'orders', label: 'Order History', icon: <Package size={18} /> },
-            { id: 'addresses', label: 'Shipping Addresses', icon: <MapPin size={18} /> },
-            { id: 'settings', label: 'Account Settings', icon: <User size={18} /> }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '1rem 0', background: 'none', border: 'none', borderBottom: activeTab === tab.id ? '2px solid var(--color-gold)' : '2px solid transparent', cursor: 'pointer', color: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-gray-text)', fontWeight: activeTab === tab.id ? '700' : '500', transition: 'all 0.3s ease', fontSize: '0.95rem'
-              }}
-            >
-              {tab.icon} {tab.label}
-            </button>
-          ))}
+        {/* Horizontal Navigation - Now Scrollable for Mobile */}
+        <div style={{ overflowX: 'auto', borderBottom: '1px solid var(--color-gray-border)', margin: '0 -1rem', padding: '0 1rem', scrollbarWidth: 'none' }} className="hide-scrollbar">
+          <div className="flex gap-6" style={{ width: 'max-content', paddingBottom: '2px' }}>
+            {[
+              { id: 'orders', label: 'Orders', icon: <Package size={18} /> },
+              { id: 'addresses', label: 'Addresses', icon: <MapPin size={18} /> },
+              { id: 'settings', label: 'Settings', icon: <User size={18} /> }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '1rem 0', background: 'none', border: 'none', borderBottom: activeTab === tab.id ? '2px solid var(--color-gold)' : '2px solid transparent', cursor: 'pointer', color: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-gray-text)', fontWeight: activeTab === tab.id ? '700' : '500', transition: 'all 0.3s ease', fontSize: '0.9rem', whiteSpace: 'nowrap'
+                }}
+              >
+                {tab.icon} {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -242,18 +245,18 @@ export default function Profile() {
                            <div key={order.id} className="card" style={{ padding: '0', border: '1px solid var(--color-gray-border)', overflow: 'hidden' }}>
                              <div 
                                 onClick={() => toggleOrder(order.id)}
-                                className="flex justify-between items-center" 
-                                style={{ padding: '1.5rem 2rem', borderBottom: expandedOrders[order.id] ? '1px solid var(--color-gray-light)' : 'none', backgroundColor: 'var(--color-ivory)', cursor: 'pointer' }}
+                                className="flex justify-between items-center order-row-mobile" 
+                                style={{ padding: 'clamp(0.75rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2rem)', borderBottom: expandedOrders[order.id] ? '1px solid var(--color-gray-light)' : 'none', backgroundColor: 'var(--color-ivory)', cursor: 'pointer' }}
                               >
-                                <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-4 order-info-mobile">
                                    <div>
-                                      <p style={{ fontSize: '0.75rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '800', margin: '0 0 0.2rem' }}>Order #{order.id.slice(-8).toUpperCase()}</p>
-                                      <p style={{ fontWeight: '700', fontSize: '1.1rem', margin: 0 }}>{new Date(order.createdAt).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                                      <p style={{ fontSize: '0.65rem', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '800', margin: '0 0 0.1rem' }}>Order #{order.id.slice(-8).toUpperCase()}</p>
+                                      <p style={{ fontWeight: '700', fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)', margin: 0 }}>{new Date(order.createdAt).toLocaleDateString()}</p>
                                    </div>
-                                   <div style={{ height: '30px', width: '1px', backgroundColor: 'var(--color-gray-border)' }}></div>
+                                   <div style={{ height: '30px', width: '1px', backgroundColor: 'var(--color-gray-border)' }} className="hide-mobile"></div>
                                    <div>
-                                      <p style={{ fontSize: '0.75rem', color: 'var(--color-gray-text)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', margin: '0 0 0.2rem' }}>Total</p>
-                                      <p style={{ fontWeight: '700', fontSize: '1.1rem', margin: 0 }}>₹{order.totalAmount}</p>
+                                      <p style={{ fontSize: '0.65rem', color: 'var(--color-gray-text)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', margin: '0 0 0.1rem' }}>Total</p>
+                                      <p style={{ fontWeight: '700', fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)', margin: 0 }}>₹{order.totalAmount}</p>
                                    </div>
                                 </div>
                                 <div className="flex items-center gap-6">
