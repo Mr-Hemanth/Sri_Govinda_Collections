@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import OrderTimeline from '../components/ui/OrderTimeline';
 import { QRCodeCanvas } from 'qrcode.react';
-import { Search } from 'lucide-react';
+import { Search, Copy, CheckCircle } from 'lucide-react';
 
 export default function TrackOrder() {
   const [searchParams] = useSearchParams();
@@ -11,6 +11,7 @@ export default function TrackOrder() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (searchParams.get('id')) {
@@ -92,27 +93,49 @@ export default function TrackOrder() {
           </div>
 
           {(order.status === 'Pending' || order.status === 'Paid') && (
-             <div style={{ backgroundColor: 'white', padding: '3.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-gold)', marginBottom: '3rem', boxShadow: 'var(--shadow-lg)' }}>
-                <div className="flex-col items-center text-center" style={{ marginBottom: '3rem' }}>
+             <div style={{ backgroundColor: 'white', padding: 'clamp(1rem, 5vw, 2.5rem)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-gold)', marginBottom: '3rem', boxShadow: 'var(--shadow-lg)' }}>
+                <div className="flex-col items-center text-center" style={{ marginBottom: '2.5rem' }}>
                     <div style={{ 
-                      padding: '1rem', background: 'white', border: '5px solid var(--color-primary)', borderRadius: '24px', marginBottom: '2rem', boxShadow: 'var(--shadow-sm)',
+                      padding: '0.75rem', background: 'white', border: '4px solid var(--color-primary)', borderRadius: '24px', marginBottom: '1.5rem', boxShadow: 'var(--shadow-sm)',
                       display: 'flex', justifyContent: 'center', alignItems: 'center'
                     }}>
                        <QRCodeCanvas 
                         value={`upi://pay?pa=9169166667@ybl&pn=SriGovinda&am=${order.totalAmount}&tn=Order_${order.id.slice(-8)}`} 
-                        size={250}
+                        size={200}
                         level={"H"}
                         includeMargin={true}
                        />
                     </div>
-                   <h4 style={{ color: 'var(--color-primary)', fontSize: '1.8rem', fontFamily: 'var(--font-heading)', marginBottom: '1rem' }}>Initiate Divine Payment</h4>
-                   <p style={{ fontSize: '1.1rem', color: '#666', maxWidth: '600px' }}>
+                    
+                    {/* Copiable UPI ID */}
+                    <div style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+                       <p style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', color: '#888' }}>Pay via UPI ID</p>
+                       <div 
+                         onClick={() => {
+                           navigator.clipboard.writeText('9169166667@ybl');
+                           setCopied(true);
+                           setTimeout(() => setCopied(false), 2000);
+                         }}
+                         style={{ 
+                           display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1.5rem', 
+                           background: '#fff', border: '1px solid var(--color-gold)', borderRadius: '50px', 
+                           cursor: 'pointer', transition: 'all 0.3s', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.1)'
+                         }}
+                         className="hover-gold"
+                       >
+                         <span style={{ fontWeight: '700', fontSize: '1.1rem', color: 'var(--color-primary-dark)' }}>9169166667@ybl</span>
+                         {copied ? <CheckCircle size={18} style={{ color: 'var(--color-success)' }} /> : <Copy size={18} style={{ color: 'var(--color-primary)' }} />}
+                       </div>
+                    </div>
+
+                   <h4 style={{ color: 'var(--color-primary)', fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', fontFamily: 'var(--font-heading)', marginBottom: '0.75rem' }}>Initiate Divine Payment</h4>
+                   <p style={{ fontSize: 'clamp(0.95rem, 3vw, 1.1rem)', color: '#666', maxWidth: '600px' }}>
                       Scan this QR with any UPI app (GPay, PhonePe, Paytm) to pay <strong>₹{order.totalAmount}</strong> securely.
                    </p>
                 </div>
 
-                <div className="flex-col gap-6" style={{ background: 'var(--color-ivory)', padding: '2.5rem', borderRadius: '16px', border: '1px dashed var(--color-gold)' }}>
-                   <h5 style={{ fontWeight: '800', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--color-primary-dark)' }}>Confirm Your Transaction</h5>
+                <div className="flex-col gap-6" style={{ background: 'var(--color-ivory)', padding: 'clamp(1rem, 4vw, 2rem)', borderRadius: '16px', border: '1px dashed var(--color-gold)' }}>
+                   <h5 style={{ fontWeight: '800', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.8rem', color: 'var(--color-primary-dark)' }}>Confirm Your Transaction</h5>
                    
                    <div className="flex-col gap-2">
                       <label style={{ fontSize: '0.85rem', fontWeight: '700' }}>12-Digit UTR Number (Transaction ID)</label>
@@ -127,7 +150,7 @@ export default function TrackOrder() {
 
                    <Button 
                      variant="primary" 
-                     style={{ width: '100%', padding: '1.4rem', fontSize: '1.1rem', borderRadius: '50px' }}
+                     style={{ width: '100%', padding: 'clamp(0.8rem, 3vw, 1.2rem)', fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)', borderRadius: '50px' }}
                      disabled={order.status === 'Paid'}
                      onClick={async () => {
                         if (!order.utr || order.utr.length < 8) return alert("Please enter a valid UTR number.");
