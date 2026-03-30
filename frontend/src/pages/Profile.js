@@ -7,6 +7,7 @@ import OrderTimeline from '../components/ui/OrderTimeline';
 import { CartContext } from '../context/CartContext';
 import { ToastContext } from '../context/ToastContext';
 import { LogOut, MapPin, Plus, Trash2, Edit2, User, ShoppingBag, Package, Settings, ChevronRight, ChevronDown, Camera } from 'lucide-react';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -42,7 +43,7 @@ export default function Profile() {
 
   const fetchProfile = async (uid) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${uid}`);
+      const res = await fetch(`${API_BASE_URL}/users/${uid}`);
       if (res.ok) {
         const data = await res.json();
         setProfile({
@@ -60,7 +61,7 @@ export default function Profile() {
 
   const fetchOrders = async (userId) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders?userId=${userId}`);
+      const res = await fetch(`${API_BASE_URL}/orders?userId=${userId}`);
       if (res.ok) {
         const data = await res.json();
         setOrders(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
@@ -76,7 +77,7 @@ export default function Profile() {
     if (e) e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.uid}`, {
+      const res = await fetch(`${API_BASE_URL}/users/${user.uid}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile)
@@ -138,7 +139,7 @@ export default function Profile() {
   const saveAddresses = async () => {
     setSaving(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.uid}`, {
+      const res = await fetch(`${API_BASE_URL}/users/${user.uid}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addresses: profile.addresses })
@@ -324,7 +325,7 @@ export default function Profile() {
                                           style={{ width: '100%', marginTop: '1.5rem', padding: '1rem' }}
                                           onClick={async () => {
                                              try {
-                                                const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/${order.id}/payment`, {
+                                                const res = await fetch(`${API_BASE_URL}/orders/${order.id}/payment`, {
                                                    method: 'PUT',
                                                    headers: { 'Content-Type': 'application/json' },
                                                    body: JSON.stringify({ 

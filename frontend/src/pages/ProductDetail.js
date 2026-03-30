@@ -6,6 +6,7 @@ import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { CartContext } from '../context/CartContext';
 import { ToastContext } from '../context/ToastContext';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -50,7 +51,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (user && product) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/orders?userId=${user.uid}`)
+      fetch(`${API_BASE_URL}/orders?userId=${user.uid}`)
         .then(r => r.json())
         .then(orders => {
            // Check if user has a delivered order containing this specific product ID
@@ -73,7 +74,7 @@ export default function ProductDetail() {
   const fetchProduct = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`);
+      const res = await fetch(`${API_BASE_URL}/products/${id}`);
       if (res.ok) {
         const data = await res.json();
         setProduct(data);
@@ -81,7 +82,7 @@ export default function ProductDetail() {
         
         // Fetch Related Products from same category
         if (data.category) {
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/products?category=${encodeURIComponent(data.category)}`)
+          fetch(`${API_BASE_URL}/products?category=${encodeURIComponent(data.category)}`)
             .then(r => r.json())
             .then(related => {
                setRelatedProducts(related.filter(p => String(p.id) !== String(data.id)).slice(0, 4));
@@ -102,7 +103,7 @@ export default function ProductDetail() {
     if (!hasPurchased) return alert("You can only review products that have been delivered to you.");
     
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${id}/reviews`, {
+      const res = await fetch(`${API_BASE_URL}/products/${id}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -135,7 +136,7 @@ export default function ProductDetail() {
 
   return (
     <div className="container section-padding animate-fade-in" style={{ maxWidth: '1400px' }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(2rem, 5vw, 8rem)', alignItems: 'flex-start' }}>
         
         {/* Massive Image Gallery */}
         <div className="flex-col gap-4" style={{ flex: '1 1 500px', minWidth: '300px' }}>
@@ -178,15 +179,15 @@ export default function ProductDetail() {
                 <p style={{ color: 'var(--color-gray-dark)', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.85rem', fontWeight: '600' }}>{product.category}</p>
                 <p style={{ color: 'var(--color-primary)', fontSize: '0.85rem', fontWeight: '700', letterSpacing: '1px', backgroundColor: 'var(--color-ivory)', padding: '0.2rem 0.8rem', borderRadius: '50px', border: '1px solid var(--color-gold)' }}>CODE: {product.id}</p>
              </div>
-             <h1 style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: '1.2' }}>{product.name}</h1>
+             <h1 style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', fontSize: 'var(--font-title)', lineHeight: '1.2' }}>{product.name}</h1>
           </div>
           
           <div style={{ padding: '1.5rem', backgroundColor: 'var(--color-ivory)', borderLeft: '6px solid var(--color-primary)', borderRadius: '0 var(--radius-sm) var(--radius-sm) 0', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
              <div className="flex items-center gap-3">
-                <p style={{ fontSize: 'clamp(2rem, 4.5vw, 3rem)', color: 'var(--color-primary)', fontWeight: '700', margin: 0 }}>₹{product.price}</p>
+                <p style={{ fontSize: 'var(--font-title)', color: 'var(--color-primary)', fontWeight: '700', margin: 0 }}>₹{product.price}</p>
                 {product.originalPrice > product.price && (
                    <div className="flex items-center gap-2">
-                      <span style={{ fontSize: '1.6rem', color: '#777', textDecoration: 'line-through', fontWeight: '500' }}>₹{product.originalPrice}</span>
+                      <span style={{ fontSize: 'var(--font-xl)', color: '#777', textDecoration: 'line-through', fontWeight: '500' }}>₹{product.originalPrice}</span>
                       <span style={{ backgroundColor: '#22c55e', color: 'white', fontSize: '0.8rem', padding: '0.3rem 0.8rem', borderRadius: '50px', fontWeight: '800' }}>
                         {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
                       </span>
@@ -209,7 +210,7 @@ export default function ProductDetail() {
 
           <div style={{ borderTop: '1px solid var(--color-gray-border)', paddingTop: '1.5rem', marginTop: '1rem' }}>
             <h3 style={{ marginBottom: '1rem', fontFamily: 'var(--font-heading)', fontSize: '1.4rem' }}>The Details</h3>
-            <p style={{ color: 'var(--color-gray-dark)', lineHeight: '1.8', fontSize: '1.05rem' }}>{product.description}</p>
+            <p style={{ color: 'var(--color-gray-dark)', lineHeight: '1.8', fontSize: 'var(--font-base)' }}>{product.description}</p>
           </div>
 
           <div className="flex-col gap-4" style={{ marginTop: '2rem' }}>
@@ -246,18 +247,26 @@ export default function ProductDetail() {
             </div>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '1.2rem 1.5rem', backgroundColor: '#f0fdf4', borderRadius: 'var(--radius-md)', marginTop: '1rem', border: '1px solid #bbf7d0' }}>
-            <span style={{ color: '#166534', fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </span>
-            <p style={{ fontSize: '0.95rem', color: '#166534', fontWeight: '500', lineHeight: '1.4' }}>Guaranteed authentic craftsmanship.<br/>Fast delivery & Secure WhatsApp checkout.</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', padding: '1.5rem', backgroundColor: '#f0fdf4', borderRadius: 'var(--radius-md)', marginTop: '1rem', border: '1px solid #bbf7d0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+              <span style={{ color: '#166534', fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </span>
+              <p style={{ fontSize: '0.95rem', color: '#166534', fontWeight: '700', lineHeight: '1.4', margin: 0 }}>Fast DTDC Shipping across India</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+              <span style={{ color: '#166534', fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}>
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </span>
+              <p style={{ fontSize: '0.9rem', color: '#166534', fontWeight: '500', lineHeight: '1.4', margin: 0 }}>2-3 days return ONLY on selected items. Must be unworn with all documents safe.</p>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <div style={{ marginTop: '10rem', borderTop: '2px solid var(--color-primary)', paddingTop: '6rem' }}>
-         <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', marginBottom: '2.5rem', textAlign: 'center' }}>More from {product.category}</h2>
+      <div style={{ marginTop: 'clamp(4rem, 10vw, 10rem)', borderTop: '2px solid var(--color-primary)', paddingTop: 'clamp(3rem, 6vw, 6rem)' }}>
+         <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--font-h2)', marginBottom: '2.5rem', textAlign: 'center' }}>More from {product.category}</h2>
          {relatedProducts.length > 0 ? (
             <div className="product-grid">
                {relatedProducts.map(prod => <ProductCard key={prod.id} product={prod} />)}
@@ -268,8 +277,8 @@ export default function ProductDetail() {
       </div>
 
       {/* Reviews Section */}
-      <div style={{ marginTop: '10rem', borderTop: '1px solid var(--color-gray-border)', paddingTop: '6rem' }}>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', marginBottom: '3rem', color: 'var(--color-primary)' }}>Customer Reviews</h2>
+      <div style={{ marginTop: 'clamp(4rem, 10vw, 10rem)', borderTop: '1px solid var(--color-gray-border)', paddingTop: 'clamp(3rem, 6vw, 6rem)' }}>
+        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--font-h2)', marginBottom: '3rem', color: 'var(--color-primary)' }}>Customer Reviews</h2>
         
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem' }}>
            <div>

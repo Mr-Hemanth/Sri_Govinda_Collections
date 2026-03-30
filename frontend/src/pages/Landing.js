@@ -45,8 +45,8 @@ export default function Landing() {
               fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', color: 'var(--color-gray-dark)', 
               fontWeight: '500', letterSpacing: '0.04em', lineHeight: '1.5', maxWidth: '700px', margin: '0 auto 2.5rem'
             }}>
-              Where Divine Craftsmanship Meets Timeless Elegance. <br className="desktop-nav" /> 
-              Curating the finest German Silver and 1 Gram Gold for the Discerning.
+              Tradition You Can Wear, Style You Can Flaunt. <br className="desktop-nav" /> 
+              Curating the finest German Silver and 1 Gram Gold since October 2025.
             </p>
           </div>
           

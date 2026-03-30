@@ -16,7 +16,7 @@ export default function About() {
           <div className="max-w-standard" style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 'clamp(4rem, 8vw, 8rem) clamp(2rem, 5vw, 5rem)', borderRadius: 'var(--radius-lg)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)' }}>
             <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(3.5rem, 10vw, 6.5rem)', marginBottom: '2.5rem', color: 'var(--color-gold-light)', letterSpacing: '-0.04em' }}>Our Heritage</h1>
             <p className="text-balance" style={{ margin: '0 auto', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', letterSpacing: '0.05em', lineHeight: '1.8', color: 'white', fontWeight: '300', maxWidth: '800px' }}>
-              Since our inception, Sri Govinda Collections has been a sanctuary for those who seek the divine intersection of tradition and luxury.
+              Established in October 2025, Sri Govinda Collections is a sanctuary for those who seek the divine intersection of tradition and luxury.
             </p>
           </div>
         </div>
@@ -33,10 +33,10 @@ export default function About() {
             <span style={{ textTransform: 'uppercase', letterSpacing: '4px', color: 'var(--color-gold)', fontWeight: '800', fontSize: '0.85rem' }}>The Sri Govinda Philosophy</span>
             <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: '1.1' }}>Artistry Born of <br/><span style={{ fontStyle: 'italic', fontWeight: '400' }}>Devotion</span></h2>
             <p style={{ fontSize: '1.2rem', lineHeight: '1.9', color: 'var(--color-gray-dark)' }}>
-              In the heart of Amalapuram, we curate pieces that are not merely ornaments but embodiments of spiritual grace. Our 1 Gram Gold collection captures the timeless luster of pure gold, while our German Silver artifacts bring an antique sophistication to modern homes.
+              In the heart of Amalapuram, we curate pieces that are not merely ornaments but embodiments of spiritual grace. Our collections capture the timeless luster of tradition while ensuring you have the style to flaunt on every occasion.
             </p>
             <p style={{ fontSize: '1.3rem', lineHeight: '1.8', fontWeight: '500', paddingLeft: '2rem', borderLeft: '4px solid var(--color-gold)', color: 'var(--color-primary)' }}>
-              "Every piece tells a story of faith, craftsmanship, and the enduring beauty of our culture."
+              "Tradition You Can Wear, Style You Can Flaunt."
             </p>
             <div style={{ marginTop: '1rem' }}>
                <Link to="/shop"><Button variant="primary" style={{ padding: '1.4rem 4rem', fontSize: '1.1rem', borderRadius: '50px' }}>Explore Our Collections</Button></Link>
@@ -51,9 +51,9 @@ export default function About() {
           <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'clamp(3rem, 6vw, 6rem)', textAlign: 'center' }}>
             {[
               { icon: <Sparkles size={48} />, label: "Exquisite Quality", desc: "Triple-layer electroplating for lasting brilliance." },
-              { icon: <ShieldCheck size={48} />, label: "Pure Trust", desc: "Thousands of verified families served worldwide." },
+              { icon: <ShieldCheck size={48} />, label: "Pure Trust", desc: "Serving families with devotion across India." },
               { icon: <Award size={48} />, label: "Handpicked Art", desc: "Curated from India's finest artisanal hubs." },
-              { icon: <Truck size={48} />, label: "Secure Global Reach", desc: "Zero-damage packaging with priority tracking." }
+              { icon: <Truck size={48} />, label: "Secure Shipping", desc: "Fast delivery via DTDC with priority tracking." }
             ].map((item, idx) => (
               <div key={idx} className="flex-col items-center gap-6">
                 <div style={{ color: 'var(--color-gold-light)' }}>{item.icon}</div>
@@ -71,19 +71,19 @@ export default function About() {
             <Sprout size={64} color="var(--color-gold)" style={{ marginBottom: '3rem' }} />
             <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '2.5rem' }}>A Vision for Tomorrow</h2>
             <p style={{ fontSize: '1.25rem', lineHeight: '1.9', color: 'var(--color-gray-dark)', marginBottom: '6rem' }}>
-              Our commitment goes beyond aesthetics. We strive to preserve the dying arts of temple jewelry making and provide sustainable livelihoods to local artisans. When you choose Sri Govinda, you choose to support a legacy.
+              Our commitment goes beyond aesthetics. We strive to preserve the dying arts of temple jewelry making and provide sustainable livelihoods to local artisans. When you choose Sri Govinda, you choose quality and tradition.
             </p>
             <div className="flex justify-center gap-12" style={{ flexWrap: 'wrap' }}>
                <div style={{ padding: '3rem 2rem', border: '1px solid var(--color-gray-border)', backgroundColor: 'var(--color-white)', flex: '1 1 200px', borderRadius: 'var(--radius-lg)' }}>
-                  <h4 style={{ margin: 0, fontSize: '3rem', color: 'var(--color-primary)' }}>5000+</h4>
-                  <p style={{ margin: '0.75rem 0 0', fontSize: '0.85rem', color: 'var(--color-gray-dark)', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: '800' }}>Happy Clients</p>
+                  <h4 style={{ margin: 0, fontSize: '3rem', color: 'var(--color-primary)' }}>Quality</h4>
+                  <p style={{ margin: '0.75rem 0 0', fontSize: '0.85rem', color: 'var(--color-gray-dark)', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: '800' }}>Guaranteed</p>
                </div>
                <div style={{ padding: '3rem 2rem', border: '1px solid var(--color-gray-border)', backgroundColor: 'var(--color-white)', flex: '1 1 200px', borderRadius: 'var(--radius-lg)' }}>
-                  <h4 style={{ margin: 0, fontSize: '3rem', color: 'var(--color-primary)' }}>10+</h4>
-                  <p style={{ margin: '0.75rem 0 0', fontSize: '0.85rem', color: 'var(--color-gray-dark)', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: '800' }}>Years of Legacy</p>
+                  <h4 style={{ margin: 0, fontSize: '3rem', color: 'var(--color-primary)' }}>Est.</h4>
+                  <p style={{ margin: '0.75rem 0 0', fontSize: '0.85rem', color: 'var(--color-gray-dark)', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: '800' }}>October 2025</p>
                </div>
                <div style={{ padding: '3rem 2rem', border: '1px solid var(--color-gray-border)', backgroundColor: 'var(--color-white)', flex: '1 1 200px', borderRadius: 'var(--radius-lg)' }}>
-                  <h4 style={{ margin: 0, fontSize: '3rem', color: 'var(--color-primary)' }}>Global</h4>
+                  <h4 style={{ margin: 0, fontSize: '3rem', color: 'var(--color-primary)' }}>Pan-India</h4>
                   <p style={{ margin: '0.75rem 0 0', fontSize: '0.85rem', color: 'var(--color-gray-dark)', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: '800' }}>Shipping</p>
                </div>
             </div>

@@ -20,9 +20,13 @@
   --color-error: #DC2626;
   --color-warning: #F59E0B;
 
-  /* Typography */
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Outfit', sans-serif;
+  /* Fluid Typography System */
+  --font-display: clamp(2.5rem, 2rem + 2.5vw, 5rem);   /* Massive Hero Headers */
+  --font-title: clamp(2rem, 1.8rem + 1vw, 3.5rem);     /* Page Titles */
+  --font-h1: clamp(1.75rem, 1.5rem + 1.25vw, 2.75rem); /* Major Section Headers */
+  --font-h2: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);    /* Sub-section Headers */
+  --font-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* Standard Body Text */
+  --font-sm: clamp(0.875rem, 0.85rem + 0.125vw, 1rem); /* Small/Metadata Text */
 
   /* Spacing & Borders */
   --radius-sm: 4px;
@@ -59,7 +63,7 @@ html {
 
 @media (max-width: 480px) {
   :root {
-    font-size: 15px; /* Global scale reduction for small screens */
+    font-size: 15.5px; /* Slightly adjusted global scale for mobile readability */
   }
 }
 
@@ -116,6 +120,12 @@ img {
 
 .section-padding {
   padding: 6rem 0;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 3.5rem 0; /* Optimized for mobile to reduce scroll fatigue */
+  }
 }
 
 .flex { display: flex; }

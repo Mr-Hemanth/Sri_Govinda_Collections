@@ -4,6 +4,7 @@ import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Button from '../components/ui/Button';
 import { Package, ChevronRight, Clock } from 'lucide-react';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -24,7 +25,7 @@ export default function Orders() {
 
   const fetchOrders = async (userId) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders?userId=${userId}`);
+      const res = await fetch(`${API_BASE_URL}/orders?userId=${userId}`);
       const data = await res.json();
       setOrders(data);
     } catch (error) {

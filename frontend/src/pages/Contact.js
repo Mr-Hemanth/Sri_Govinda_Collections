@@ -21,7 +21,7 @@ export default function Contact() {
             </div>
             <div>
               <h3 style={{ marginBottom: '0.4rem', fontFamily: 'var(--font-heading)', fontSize: '1.3rem' }}>Our Boutique</h3>
-              <p style={{ color: 'var(--color-gray-dark)', fontWeight: '500' }}>Main Road, Amalapuram, Andhra Pradesh, India</p>
+              <p style={{ color: 'var(--color-gray-dark)', fontWeight: '500' }}>Amalapuram, East Godavari, near Subbaalamma temple, 533201</p>
             </div>
           </div>
           
@@ -41,7 +41,7 @@ export default function Contact() {
             </div>
             <div>
               <h3 style={{ marginBottom: '0.4rem', fontFamily: 'var(--font-heading)', fontSize: '1.3rem' }}>Electronic Mail</h3>
-              <p style={{ color: 'var(--color-gray-dark)', fontWeight: '500' }}>contact@srigovindacollections.com</p>
+              <p style={{ color: 'var(--color-gray-dark)', fontWeight: '500' }}>sri.jewellery9999@gmail.com</p>
             </div>
           </div>
 

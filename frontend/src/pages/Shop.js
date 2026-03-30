@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductCard from '../components/ui/ProductCard';
 import { Search } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function Shop() {
   const [products, setProducts] = useState([]);
@@ -28,11 +29,7 @@ export default function Shop() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      // Ensure the base URL is correct and trimmed
-      const baseUrl = process.env.REACT_APP_API_BASE_URL?.trim();
-      if (!baseUrl) throw new Error("API URL missing");
-
-      const url = new URL(`${baseUrl}/products`);
+      const url = new URL(`${API_BASE_URL}/products`);
       if (category && category !== 'All') url.searchParams.append('category', category);
       if (searchQuery) url.searchParams.append('search', searchQuery);
       if (sort) url.searchParams.append('sort', sort);
@@ -48,14 +45,6 @@ export default function Shop() {
       }
     } catch (err) {
       console.error("Fetch Error:", err);
-      // Fallback only if absolutely necessary, but alert user
-      if (products.length === 0) {
-        setProducts([
-          { id: '1', name: 'Premium 1g Gold Necklace', category: '1 Gram Gold', price: 1500, images: ['https://images.unsplash.com/photo-1599643477873-beefa344dd1a?w=400'], stock: 5 },
-          { id: '2', name: 'German Silver Earrings', category: 'German Silver', price: 500, images: ['https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400'], stock: 12 },
-          { id: '3', name: 'Venkateswara Idol', category: 'Gift Articles', price: 2500, images: ['https://images.unsplash.com/photo-1603525203792-c67be3005a39?w=400'], stock: 3 },
-        ]);
-      }
     }
     setLoading(false);
   };

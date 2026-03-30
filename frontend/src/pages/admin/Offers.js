@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, Plus, Trash2, Edit2, Calendar, Percent, AlertCircle } from 'lucide-react';
 import Button from '../../components/ui/Button';
+import { API_BASE_URL } from '../../apiConfig';
 
 const AdminOffers = () => {
     const [offers, setOffers] = useState([]);
@@ -25,7 +26,7 @@ const AdminOffers = () => {
     const fetchOffers = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/offers`);
+            const res = await fetch(`${API_BASE_URL}/offers`);
             if (res.ok) {
                 const data = await res.json();
                 setOffers(data);
@@ -40,8 +41,8 @@ const AdminOffers = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const url = editingId 
-            ? `${process.env.REACT_APP_API_BASE_URL}/offers/${editingId}`
-            : `${process.env.REACT_APP_API_BASE_URL}/offers`;
+            ? `${API_BASE_URL}/offers/${editingId}`
+            : `${API_BASE_URL}/offers`;
         
         const method = editingId ? 'PUT' : 'POST';
 
@@ -78,7 +79,7 @@ const AdminOffers = () => {
     const handleDelete = async (id) => {
         if (!window.confirm('Are you sure you want to delete this offer?')) return;
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/offers/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${API_BASE_URL}/offers/${id}`, { method: 'DELETE' });
             if (res.ok) fetchOffers();
         } catch (error) {
             console.error('Error deleting offer:', error);

@@ -13,10 +13,10 @@ export default function Footer() {
                <img src="/logo.png" alt="Sri Govinda Collections" style={{ height: '70px', width: '70px', borderRadius: '50%', border: '2px solid var(--color-gold)', objectFit: 'cover' }} />
             </Link>
             <p style={{ fontSize: '0.95rem', color: '#ccc', lineHeight: '1.7', maxWidth: '350px' }}>
-              Crafting Divine Legacies since 2014. Premium German Silver, 1 Gram Gold, and Panchalohas from the heart of Andhra Pradesh.
+              Tradition You Can Wear, Style You Can Flaunt. Curating premium jewelry and divine artifacts since October 2025.
             </p>
             <div className="flex gap-4">
-               <a href="#" className="social-icon-btn"><Instagram size={20} /></a>
+               <a href="https://www.instagram.com/srigovindacollections?igsh=MXE4dDhoMWIzMGN1dQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="social-icon-btn"><Instagram size={20} /></a>
                <a href="#" className="social-icon-btn"><Facebook size={20} /></a>
                <a href="#" className="social-icon-btn"><Twitter size={20} /></a>
             </div>
@@ -40,7 +40,7 @@ export default function Footer() {
             <div className="flex-col gap-4" style={{ fontSize: '0.9rem', color: '#ccc' }}>
               <div className="flex items-start gap-4">
                  <MapPin size={20} color="var(--color-primary)" />
-                 <p>Amalapuram, East Godavari, <br/>Andhra Pradesh, 533201</p>
+                 <p>Amalapuram, East Godavari, <br/>near Subbaalamma temple, 533201</p>
               </div>
               <div className="flex items-start gap-4">
                  <Phone size={20} color="var(--color-primary)" />
@@ -48,7 +48,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-4">
                  <Mail size={20} color="var(--color-primary)" />
-                 <p>boutique@srigovinda.com</p>
+                 <p>sri.jewellery9999@gmail.com</p>
               </div>
             </div>
           </div>

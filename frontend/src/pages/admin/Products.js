@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { auth } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Button from '../../components/ui/Button';
+import { API_BASE_URL } from '../../apiConfig';
 import {
   Package,
   Edit2,
@@ -32,9 +33,7 @@ export default function AdminProducts() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const baseUrl = process.env.REACT_APP_API_BASE_URL?.trim();
-      if (!baseUrl) return;
-      const res = await fetch(`${baseUrl}/products`);
+      const res = await fetch(`${API_BASE_URL}/products`);
       if (res.ok) setProducts(await res.json());
     } catch (e) {
       console.error("Fetch products failed", e);
@@ -91,7 +90,7 @@ export default function AdminProducts() {
     };
 
     try {
-      const url = `${process.env.REACT_APP_API_BASE_URL}/products${isEditing ? `/${editId}` : ''}`;
+      const url = `${API_BASE_URL}/products${isEditing ? `/${editId}` : ''}`;
       const method = isEditing ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(productPayload)
@@ -123,7 +122,7 @@ export default function AdminProducts() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/products/${id}`, { method: 'DELETE' });
       if (res.ok) fetchProducts();
     } catch (e) { alert("Delete failed"); }
   };

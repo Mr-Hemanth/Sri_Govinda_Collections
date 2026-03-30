@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Button from '../../components/ui/Button';
-
 import { auth } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { API_BASE_URL } from '../../apiConfig';
+import Button from '../../components/ui/Button';
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -30,12 +30,7 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const baseUrl = process.env.REACT_APP_API_BASE_URL?.trim();
-      if (!baseUrl) {
-        console.warn("API Base URL not defined.");
-        return;
-      }
-      const res = await fetch(`${baseUrl}/orders`);
+      const res = await fetch(`${API_BASE_URL}/orders`);
       if (res.ok) {
         const data = await res.json();
         setOrders(data);
@@ -48,7 +43,7 @@ export default function AdminOrders() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/orders/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })

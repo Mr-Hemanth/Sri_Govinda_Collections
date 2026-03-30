@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import Button from '../components/ui/Button';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function Signup() {
   const [name, setName] = useState('');
@@ -19,7 +20,7 @@ export default function Signup() {
       await updateProfile(user, { displayName: name });
       
       // Initialize Firestore profile via backend
-      await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.uid}`, {
+      await fetch(`${API_BASE_URL}/users/${user.uid}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

@@ -14,6 +14,7 @@ import {
 
 import { auth } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { API_BASE_URL } from '../../apiConfig';
 
 export default function AdminDashboard() {
   const [orders, setOrders] = useState([]);
@@ -44,10 +45,9 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const baseUrl = process.env.REACT_APP_API_BASE_URL?.trim();
       const [ordRes, prodRes] = await Promise.all([
-        fetch(`${baseUrl}/orders`),
-        fetch(`${baseUrl}/products`)
+        fetch(`${API_BASE_URL}/orders`),
+        fetch(`${API_BASE_URL}/products`)
       ]);
 
       if (ordRes.ok && prodRes.ok) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, Copy, CheckCircle, Clock, Percent } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { API_BASE_URL } from '../apiConfig';
 
 const Offers = () => {
     const [offers, setOffers] = useState([]);
@@ -13,7 +14,7 @@ const Offers = () => {
 
     const fetchOffers = async () => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/offers`);
+            const res = await fetch(`${API_BASE_URL}/offers`);
             if (res.ok) {
                 const data = await res.json();
                 setOffers(data);

@@ -4,6 +4,7 @@ import Button from '../components/ui/Button';
 import OrderTimeline from '../components/ui/OrderTimeline';
 import { QRCodeCanvas } from 'qrcode.react';
 import { Search, Copy, CheckCircle } from 'lucide-react';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function TrackOrder() {
   const [searchParams] = useSearchParams();
@@ -24,7 +25,7 @@ export default function TrackOrder() {
     setError('');
     setOrder(null);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/${id.trim()}`);
+      const res = await fetch(`${API_BASE_URL}/orders/${id.trim()}`);
       if (!res.ok) throw new Error('Order not found.');
       const data = await res.json();
       setOrder(data);
@@ -100,7 +101,7 @@ export default function TrackOrder() {
                       display: 'flex', justifyContent: 'center', alignItems: 'center'
                     }}>
                        <QRCodeCanvas 
-                        value={`upi://pay?pa=9169166667@ybl&pn=SriGovinda&am=${order.totalAmount}&tn=Order_${order.id.slice(-8)}`} 
+                        value={`upi://pay?pa=sridevi.dwarampudi@ybl&pn=SriGovinda&am=${order.totalAmount}&tn=Order_${order.id.slice(-8)}`} 
                         size={200}
                         level={"H"}
                         includeMargin={true}
@@ -112,7 +113,7 @@ export default function TrackOrder() {
                        <p style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', color: '#888' }}>Pay via UPI ID</p>
                        <div 
                          onClick={() => {
-                           navigator.clipboard.writeText('9169166667@ybl');
+                           navigator.clipboard.writeText('sridevi.dwarampudi@ybl');
                            setCopied(true);
                            setTimeout(() => setCopied(false), 2000);
                          }}
@@ -123,7 +124,7 @@ export default function TrackOrder() {
                          }}
                          className="hover-gold"
                        >
-                         <span style={{ fontWeight: '700', fontSize: '1.1rem', color: 'var(--color-primary-dark)' }}>9169166667@ybl</span>
+                         <span style={{ fontWeight: '700', fontSize: '1.1rem', color: 'var(--color-primary-dark)' }}>sridevi.dwarampudi@ybl</span>
                          {copied ? <CheckCircle size={18} style={{ color: 'var(--color-success)' }} /> : <Copy size={18} style={{ color: 'var(--color-primary)' }} />}
                        </div>
                     </div>
@@ -156,7 +157,7 @@ export default function TrackOrder() {
                         if (!order.utr || order.utr.length < 8) return alert("Please enter a valid UTR number.");
                         setLoading(true);
                         try {
-                           const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/${order.id}/payment`, {
+                           const res = await fetch(`${API_BASE_URL}/orders/${order.id}/payment`, {
                               method: 'PUT',
                               headers: { 'Content-Type': 'application/json' },
                               body: JSON.stringify({ 

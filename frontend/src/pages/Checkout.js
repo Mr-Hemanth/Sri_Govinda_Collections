@@ -1,9 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import Button from '../components/ui/Button';
-import { CartContext } from '../context/CartContext';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { API_BASE_URL } from '../apiConfig';
+import Button from '../components/ui/Button';
+import { useContext, useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { CartContext } from '../context/CartContext';
 
 export default function Checkout() {
   const [searchParams] = useSearchParams();
@@ -40,7 +41,7 @@ export default function Checkout() {
     });
 
     if (productId) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`)
+      fetch(`${API_BASE_URL}/products/${productId}`)
         .then(res => res.json())
         .then(data => setProduct(data))
         .catch(err => console.error(err));
@@ -51,7 +52,7 @@ export default function Checkout() {
 
   const fetchSavedAddresses = async (uid) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${uid}`);
+      const res = await fetch(`${API_BASE_URL}/users/${uid}`);
       if (res.ok) {
         const data = await res.json();
         setSavedAddresses(data.addresses || []);
@@ -76,7 +77,7 @@ export default function Checkout() {
     if (!couponCode) return;
     setCouponError('');
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/offers/validate`, {
+      const res = await fetch(`${API_BASE_URL}/offers/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: couponCode, userId: user?.uid })
@@ -113,7 +114,7 @@ export default function Checkout() {
     e.preventDefault();
     if (!user) return alert("Please login to save addresses");
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.uid}/addresses`, {
+      const res = await fetch(`${API_BASE_URL}/users/${user.uid}/addresses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ address: newAddress })
@@ -158,7 +159,7 @@ export default function Checkout() {
       
       let orderId = "";
       try {
-          const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders`, {
+          const res = await fetch(`${API_BASE_URL}/orders`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...newOrder, couponCode: discountInfo ? discountInfo.code : couponCode })
@@ -174,14 +175,12 @@ export default function Checkout() {
           
           orderId = data.id;
       } catch (err) {
-          console.error("API error", err);
-          const currentApiUrl = process.env.REACT_APP_API_BASE_URL || 'UNDEFINED';
-          const isVercelLocalhost = window.location.hostname.includes('vercel.app') && currentApiUrl.includes('localhost');
+          const isVercelLocalhost = window.location.hostname.includes('vercel.app') && API_BASE_URL.includes('localhost');
           
           if (isVercelLocalhost) {
-            alert(`🛑 Configuration Error: Your website is pointing to "${currentApiUrl}" instead of Render. \n\nAction: Set REACT_APP_API_BASE_URL to "https://sri-govinda-backend.onrender.com/api" in Vercel Settings and then REDEPLOY.`);
+            alert(`🛑 Configuration Error: Your website is pointing to "${API_BASE_URL}" instead of Render. \n\nAction: Set REACT_APP_API_BASE_URL to "https://sri-govinda-backend.onrender.com/api" in Vercel Settings and then REDEPLOY.`);
           } else {
-            alert(`⏳ Communication Error with: ${currentApiUrl} \n\nThis is usually a 45-second "Cold Start" on Render. Please wait 10 seconds and try confirmed again. Your cart is safe!`);
+            alert(`⏳ Communication Error with: ${API_BASE_URL} \n\nThis is usually a 45-second "Cold Start" on Render. Please wait 10 seconds and try confirmed again. Your cart is safe!`);
           }
           setLoading(false);
           return;
@@ -244,9 +243,9 @@ Please visit the tracking link above to scan the UPI QR code and submit your UTR
   if (orderSuccess) {
     return (
       <div className="container section-padding text-center animate-fade-in" style={{ maxWidth: '600px', minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <header style={{ marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '3rem', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Order Initialized!</h1>
-          <p style={{ color: 'var(--color-gray-dark)', fontSize: '1.2rem', lineHeight: '1.6' }}>
+        <header style={{ marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: 'var(--font-title)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Order Initialized!</h1>
+          <p style={{ color: 'var(--color-gray-dark)', fontSize: 'var(--font-base)', lineHeight: '1.6' }}>
             We've successfully created your order in our registry.
           </p>
         </header>
@@ -267,17 +266,17 @@ Please visit the tracking link above to scan the UPI QR code and submit your UTR
 
   return (
     <div className="container section-padding animate-fade-in" style={{ maxWidth: '1200px' }}>
-      <header style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>Secure Checkout</h1>
-        <p style={{ color: 'var(--color-gray-text)', fontSize: '1.1rem' }}>Your luxurious selection is just one step away from reaching you.</p>
+      <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: 'var(--font-title)', marginBottom: '1rem' }}>Secure Checkout</h1>
+        <p style={{ color: 'var(--color-gray-text)', fontSize: 'var(--font-base)' }}>Your luxurious selection is just one step away from reaching you.</p>
       </header>
       
       <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
         
         {/* Order Details Column */}
         <div className="flex-col gap-6">
-          <div className="card glass" style={{ padding: '2.5rem' }}>
-             <h2 style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>Order Summmary</h2>
+          <div className="card glass" style={{ padding: 'clamp(1.5rem, 5vw, 2.5rem)' }}>
+             <h2 style={{ fontSize: 'var(--font-h2)', marginBottom: '1.5rem' }}>Order Summary</h2>
               <div className="flex-col gap-4" style={{ marginBottom: '2rem' }}>
                  {items.map(item => (
                     <div key={item.id} className="flex gap-4 items-center" style={{ paddingBottom: '1.2rem', borderBottom: '1px solid var(--color-gray-border)' }}>
@@ -322,7 +321,7 @@ Please visit the tracking link above to scan the UPI QR code and submit your UTR
                 {discountInfo && <p style={{ color: 'var(--color-success)', fontSize: '0.85rem', fontWeight: 'bold' }}>✓ Coupon Applied: ₹{calculateDiscount()} saved!</p>}
              </div>
 
-             <div className="flex-col gap-3" style={{ background: 'var(--color-gray-light)', padding: '2rem', borderRadius: '16px' }}>
+             <div className="flex-col gap-3" style={{ background: 'var(--color-gray-light)', padding: 'clamp(1.2rem, 3vw, 2rem)', borderRadius: '16px' }}>
                 <div className="flex justify-between">
                   <span>Subtotal (MRP):</span>
                   <span style={(items.reduce((acc, item) => acc + (((item.originalPrice || item.price) - item.price) * item.quantity), 0) + calculateDiscount()) > 0 ? { textDecoration: 'line-through', opacity: 0.7 } : {}}>
@@ -356,8 +355,8 @@ Please visit the tracking link above to scan the UPI QR code and submit your UTR
 
         {/* Shipping Column */}
         <div className="flex-col gap-6">
-           <div className="card glass" style={{ padding: '2.5rem' }}>
-              <h2 style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>Fulfillment Details</h2>
+           <div className="card glass" style={{ padding: 'clamp(1.5rem, 5vw, 2.5rem)' }}>
+              <h2 style={{ fontSize: 'var(--font-h2)', marginBottom: '1.5rem' }}>Fulfillment Details</h2>
               
               <form onSubmit={handleSubmit} className="flex-col gap-5">
                 <div className="flex-col gap-1">
