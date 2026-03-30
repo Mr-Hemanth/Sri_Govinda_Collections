@@ -20,9 +20,11 @@ export default function HeroBanner() {
         <p className="animate-fade-in text-shadow-sm" style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)', maxWidth: '750px', margin: '0 auto 2.5rem', color: 'rgba(255,255,255,1)', animationDelay: '0.2s', animationFillMode: 'both', fontWeight: '400', letterSpacing: '0.05em', lineHeight: '1.8' }}>
           Tradition You Can Wear, Style You Can Flaunt. Discover our premium collection of German Silver, 1 Gram Gold, and Exquisite Gift Articles.
         </p>
-        <Link to="/shop" className="animate-fade-in" style={{ display: 'inline-block', animationDelay: '0.4s', animationFillMode: 'both' }}>
-          <Button variant="primary" style={{ padding: '1rem 2.5rem' }}>Explore Collection</Button>
-        </Link>
+        <div className="flex justify-center" style={{ width: '100%' }}>
+          <Link to="/shop" className="animate-fade-in" style={{ display: 'inline-block', animationDelay: '0.4s', animationFillMode: 'both' }}>
+            <Button variant="primary" style={{ padding: '1rem 2.5rem' }}>Explore Collection</Button>
+          </Link>
+        </div>
       </div>
       <style>{`
         .hero-banner::before {

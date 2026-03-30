@@ -50,13 +50,13 @@ export default function Landing() {
             </p>
           </div>
           
-          <div className="flex gap-6 justify-center" style={{ width: '100%', flexWrap: 'wrap' }}>
-            <Link to="/home" style={{ flex: '1 1 280px', maxWidth: '300px' }}>
+          <div className="flex gap-6 justify-center items-center" style={{ width: '100%', flexWrap: 'wrap', flexDirection: window.innerWidth < 640 ? 'column' : 'row' }}>
+            <Link to="/home" style={{ width: window.innerWidth < 640 ? '100%' : 'auto', maxWidth: '300px' }}>
               <Button variant="primary" style={{ width: '100%', padding: '1.6rem 0', fontSize: '1.1rem', borderRadius: '50px', letterSpacing: '2px', fontWeight: '800' }}>
                 ENTER BOUTIQUE
               </Button>
             </Link>
-            <Link to="/login" style={{ flex: '1 1 280px', maxWidth: '300px' }}>
+            <Link to="/login" style={{ width: window.innerWidth < 640 ? '100%' : 'auto', maxWidth: '300px' }}>
               <Button variant="outline" style={{ width: '100%', padding: '1.6rem 0', fontSize: '1.1rem', borderRadius: '50px', letterSpacing: '2px', fontWeight: '800' }}>
                 MEMBER PORTAL
               </Button>
