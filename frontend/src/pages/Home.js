@@ -36,17 +36,68 @@ export default function Home() {
     { name: '1 Gram Gold', icon: <Sparkles size={40} />, desc: 'Antique finish traditional necklaces and temple jewelry.' },
     { name: 'German Silver', icon: <Waves size={40} />, desc: 'Premium silver urulis, deepams, and traditional home decor.' },
     { name: 'Panchalohas', icon: <Gem size={40} />, desc: 'Exquisite five-metal alloy idols with a sacred aura.' },
-    { name: 'Gift Articles', icon: <Gift size={40} />, desc: 'Luxury boxed artifacts and souvenirs for every celebration.' }
+    { name: 'Temple Jewels', icon: <Sparkles size={40} />, desc: 'Sacred craftsmanship for divine adornment and spiritual grace.' },
+    { name: 'Silver Articles', icon: <Gift size={40} />, desc: 'Pure silver utensils and ritual artifacts for your home.' },
+    { name: 'Men\'s Collection', icon: <Gem size={40} />, desc: 'Traditional kadas and premium accessories for the modern man.' }
   ];
+
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  useEffect(() => {
+    const container = document.getElementById('category-carousel');
+    if (!container) return;
+    
+    const handleScroll = () => {
+      const scrollPos = container.scrollLeft;
+      const cardWidth = 352; // 320px width + 32px gap
+      const index = Math.round(scrollPos / cardWidth);
+      setActiveSlide(index);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleMouseDown = (e) => {
+    const container = document.getElementById('category-carousel');
+    setIsDown(true);
+    container.classList.add('grabbing');
+    setStartX(e.pageX - container.offsetLeft);
+    setScrollLeftState(container.scrollLeft);
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    const container = document.getElementById('category-carousel');
+    setIsDown(false);
+    container.classList.remove('grabbing');
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const container = document.getElementById('category-carousel');
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed
+    container.scrollLeft = scrollLeftState - walk;
+  };
 
   const scrollCarousel = (direction) => {
     const container = document.getElementById('category-carousel');
-    const scrollAmount = 350;
+    const scrollAmount = 352;
     if (direction === 'left') {
       container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     } else {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
+  };
+
+  const scrollToSlide = (index) => {
+    const container = document.getElementById('category-carousel');
+    const scrollAmount = 352 * index;
+    container.scrollTo({ left: scrollAmount, behavior: 'smooth' });
   };
 
   return (
@@ -74,9 +125,17 @@ export default function Home() {
             </div>
           </header>
       
-          <div id="category-carousel" className="flex gap-8 overflow-x-auto hide-scrollbar" style={{ paddingBottom: '2rem', scrollSnapType: 'x mandatory' }}>
+          <div 
+            id="category-carousel" 
+            className="flex gap-8 overflow-x-auto hide-scrollbar" 
+            style={{ paddingBottom: '3rem', scrollSnapType: isDown ? 'none' : 'x mandatory', cursor: 'grab', userSelect: 'none' }}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeaveOrUp}
+            onMouseUp={handleMouseLeaveOrUp}
+            onMouseMove={handleMouseMove}
+          >
             {categories.map(cat => (
-              <Link key={cat.name} to={`/shop?category=${encodeURIComponent(cat.name)}`} className="category-card-premium" style={{ flex: '0 0 320px', scrollSnapAlign: 'start' }}>
+              <Link key={cat.name} to={`/shop?category=${encodeURIComponent(cat.name)}`} className="category-card-premium" style={{ flex: '0 0 320px', scrollSnapAlign: 'start', pointerEvents: isDown ? 'none' : 'auto' }}>
                  <div className="inner-card flex-col items-center text-center p-12" style={{ 
                     height: '400px', 
                     background: 'linear-gradient(135deg, var(--color-white) 0%, var(--color-ivory) 100%)',
@@ -104,6 +163,26 @@ export default function Home() {
               </Link>
             ))}
           </div>
+
+          {/* Pagination Dots */}
+          <div className="flex justify-center gap-3" style={{ marginTop: '1rem' }}>
+             {categories.map((_, idx) => (
+                <button 
+                  key={idx} 
+                  onClick={() => scrollToSlide(idx)}
+                  style={{ 
+                    width: activeSlide === idx ? '30px' : '10px', 
+                    height: '10px', 
+                    borderRadius: '5px', 
+                    background: activeSlide === idx ? 'var(--color-primary)' : 'var(--color-primary-light)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+             ))}
+          </div>
         </div>
       </section>
 
@@ -111,13 +190,15 @@ export default function Home() {
       <section className="section-padding bg-white" style={{ borderTop: '1px solid var(--color-gray-border)', borderBottom: '1px solid var(--color-gray-border)' }}>
         <div className="container">
           <div className="flex justify-between items-center mobile-center-header" style={{ marginBottom: '6rem', flexWrap: 'wrap', gap: '2rem' }}>
-            <div>
+            <div className="flex-col items-center">
               <h2 style={{ fontSize: 'var(--font-h1)', color: 'var(--color-primary)' }}>Featured Arrivals</h2>
               <p style={{ color: 'var(--color-gray-dark)', fontSize: 'var(--font-base)', marginTop: '0.5rem' }}>Handpicked masterpieces for your selection.</p>
             </div>
-            <Link to="/shop">
-              <Button variant="outline" style={{ padding: '1rem 3rem', borderRadius: '50px', fontSize: 'var(--font-sm)' }}>View All Products</Button>
-            </Link>
+            <div className="flex justify-center" style={{ width: window.innerWidth < 768 ? '100%' : 'auto' }}>
+              <Link to="/shop">
+                <Button variant="outline" style={{ padding: '1rem 3rem', borderRadius: '50px', fontSize: 'var(--font-sm)' }}>View All Products</Button>
+              </Link>
+            </div>
           </div>
           <div className="product-grid">
             {loading ? (
@@ -157,15 +238,17 @@ export default function Home() {
       {/* Brand Vision */}
       <section className="bg-black section-padding" style={{ position: 'relative', overflow: 'hidden' }}>
         <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
-           <div style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 'clamp(3rem, 5vw, 6rem)', borderRadius: 'var(--radius-lg)', display: 'inline-block', border: '1px solid rgba(212, 175, 55, 0.2)', backdropFilter: 'blur(10px)' }}>
-             <h2 style={{ fontSize: 'var(--font-display)', color: 'var(--color-primary)', marginBottom: '2rem' }}>The Sri Govinda Vision</h2>
-             <p style={{ maxWidth: '750px', margin: '0 auto 4rem', color: 'var(--color-ivory)', fontSize: 'var(--font-lg)', lineHeight: '1.8', opacity: 0.9 }}>
-                Established in October 2025, Sri Govinda Collections brings you "Tradition You Can Wear, Style You Can Flaunt." We believe that jewelry is a celebration of divinity and a testament to profound craftsmanship.
-             </p>
-             <Link to="/shop">
+           <div style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 'clamp(3rem, 5vw, 6rem)', borderRadius: 'var(--radius-lg)', display: 'inline-flex', flexDirection: 'column', alignItems: 'center', border: '1px solid rgba(212, 175, 55, 0.2)', backdropFilter: 'blur(10px)', maxWidth: '100%' }}>
+            <h2 className="text-gold" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)' }}>The Sri Govinda Vision</h2>
+            <p style={{ fontSize: 'var(--font-base)', maxWidth: '750px', color: 'rgba(255,255,255,0.9)', marginBottom: '3rem', lineHeight: '1.8' }}>
+              We believe jewelry is more than an accessory; it is a legacy. Our curated collections of 1 Gram Gold, German Silver, and divine gift articles are designed for the modern connoisseur who values authenticity, quality, and timeless craftsmanship.
+            </p>
+            <div className="flex justify-center" style={{ width: '100%' }}>
+              <Link to="/shop">
                 <Button style={{ padding: '1.4rem 4rem', fontSize: 'var(--font-sm)', letterSpacing: '1px' }}>EXPLORE THE COLLECTIONS</Button>
-             </Link>
-           </div>
+              </Link>
+            </div>
+          </div>
         </div>
          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.25, backgroundImage: 'url(https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&q=80&w=1600)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }}></div>
       </section>

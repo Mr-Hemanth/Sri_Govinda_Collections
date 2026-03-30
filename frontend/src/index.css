@@ -148,6 +148,10 @@ img {
   display: none;            /* Chrome/Safari/Opera */
 }
 
+.grabbing {
+  cursor: grabbing !important;
+}
+
 /* Responsive Display Utilities */
 @media (max-width: 1024px) {
   .desktop-nav { display: none !important; }
