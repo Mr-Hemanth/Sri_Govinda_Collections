@@ -175,7 +175,14 @@ export default function Checkout() {
           orderId = data.id;
       } catch (err) {
           console.error("API error", err);
-          alert("Server is currently waking up from a deep sleep (Cold Start). Please wait 10-15 seconds and try once more. Your selection is safe!");
+          const currentApiUrl = process.env.REACT_APP_API_BASE_URL || 'UNDEFINED';
+          const isVercelLocalhost = window.location.hostname.includes('vercel.app') && currentApiUrl.includes('localhost');
+          
+          if (isVercelLocalhost) {
+            alert(`🛑 Configuration Error: Your website is pointing to "${currentApiUrl}" instead of Render. \n\nAction: Set REACT_APP_API_BASE_URL to "https://sri-govinda-backend.onrender.com/api" in Vercel Settings and then REDEPLOY.`);
+          } else {
+            alert(`⏳ Communication Error with: ${currentApiUrl} \n\nThis is usually a 45-second "Cold Start" on Render. Please wait 10 seconds and try confirmed again. Your cart is safe!`);
+          }
           setLoading(false);
           return;
       }
@@ -316,7 +323,12 @@ Please visit the tracking link above to scan the UPI QR code and submit your UTR
              </div>
 
              <div className="flex-col gap-3" style={{ background: 'var(--color-gray-light)', padding: '2rem', borderRadius: '16px' }}>
-                <div className="flex justify-between"><span>Subtotal (MRP):</span><span>₹{items.reduce((acc, item) => acc + ((item.originalPrice || item.price) * item.quantity), 0)}</span></div>
+                <div className="flex justify-between">
+                  <span>Subtotal (MRP):</span>
+                  <span style={(items.reduce((acc, item) => acc + (((item.originalPrice || item.price) - item.price) * item.quantity), 0) + calculateDiscount()) > 0 ? { textDecoration: 'line-through', opacity: 0.7 } : {}}>
+                    ₹{items.reduce((acc, item) => acc + ((item.originalPrice || item.price) * item.quantity), 0)}
+                  </span>
+                </div>
                 
                 {items.reduce((acc, item) => acc + (((item.originalPrice || item.price) - item.price) * item.quantity), 0) > 0 && (
                    <div className="flex justify-between" style={{ color: '#166534', fontWeight: '500' }}>

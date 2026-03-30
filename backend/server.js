@@ -109,6 +109,24 @@ app.get('/api/analytics', async (req, res) => {
     }
 });
 
+// Subscription Route
+app.post('/api/subscribe', async (req, res) => {
+    const { email } = req.body;
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({ error: 'Valid email is required' });
+    }
+    try {
+        await db.collection('subscriptions').add({
+            email,
+            createdAt: new Date().toISOString()
+        });
+        res.json({ message: 'Subscribed successfully!' });
+    } catch (error) {
+        console.error('Subscription error:', error);
+        res.status(500).json({ error: 'Failed to subscribe' });
+    }
+});
+
 // Root Route
 app.get('/', (req, res) => {
     res.send('Sri Govinda Collections API is running');

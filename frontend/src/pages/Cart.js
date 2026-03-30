@@ -86,7 +86,11 @@ export default function Cart() {
           <p style={{ color: 'var(--color-gray-dark)', fontSize: '1rem', lineHeight: '1.6' }}>Taxes and shipping are calculated at checkout. Proceed to WhatsApp for final confirmation and secure payment.</p>
         </div>
         <div style={{ textAlign: 'right', flex: '1 1 200px' }}>
-          <p style={{ fontSize: '1rem', color: 'var(--color-gray-dark)', marginBottom: '0.25rem' }}>Subtotal: <span style={{ textDecoration: 'line-through' }}>₹{cart.reduce((acc, item) => acc + ((item.originalPrice || item.price) * item.quantity), 0)}</span></p>
+          <p style={{ fontSize: '1rem', color: 'var(--color-gray-dark)', marginBottom: '0.25rem' }}>
+            Subtotal: <span style={total < cart.reduce((acc, item) => acc + ((item.originalPrice || item.price) * item.quantity), 0) ? { textDecoration: 'line-through' } : {}}>
+              ₹{cart.reduce((acc, item) => acc + ((item.originalPrice || item.price) * item.quantity), 0)}
+            </span>
+          </p>
           {cart.reduce((acc, item) => acc + (((item.originalPrice || item.price) - item.price) * item.quantity), 0) > 0 && (
              <p style={{ color: '#166534', fontWeight: '700', fontSize: '0.9rem', marginBottom: '0.5rem' }}>✓ Total Savings: ₹{cart.reduce((acc, item) => acc + (((item.originalPrice || item.price) - item.price) * item.quantity), 0)}</p>
           )}

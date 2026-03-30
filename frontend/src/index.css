@@ -378,4 +378,10 @@ th {
   .mobile-hide-logo {
     display: none !important;
   }
+  .mobile-center-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 2rem !important;
+  }
 }

@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -71,7 +74,7 @@ export default function Home() {
       {/* Featured Products */}
       <section className="section-padding bg-white" style={{ borderTop: '1px solid var(--color-gray-border)', borderBottom: '1px solid var(--color-gray-border)' }}>
         <div className="container">
-          <div className="flex justify-between items-end" style={{ marginBottom: '8rem', flexWrap: 'wrap', gap: '2rem' }}>
+          <div className="flex justify-between items-end mobile-center-header" style={{ marginBottom: '8rem', flexWrap: 'wrap', gap: '2rem' }}>
             <div>
               <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', color: 'var(--color-primary)' }}>Featured Arrivals</h2>
               <p style={{ color: 'var(--color-gray-dark)', fontSize: '1.3rem', marginTop: '0.75rem' }}>Handpicked masterpieces for your curated collection.</p>
@@ -110,15 +113,60 @@ export default function Home() {
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.35, backgroundImage: 'url(https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&q=80&w=1600)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }}></div>
       </section>
 
-      {/* Newsletter / Contact Promo */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--color-white)' }}>
-         <div className="max-w-narrow text-center">
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: 'var(--color-primary)', marginBottom: '2rem' }}>Join the Divine Circle</h2>
-            <p className="text-balance" style={{ marginBottom: '4.5rem', color: 'var(--color-gray-dark)', fontSize: '1.25rem', lineHeight: '1.8', fontWeight: '400' }}>Subscribe to our newsletter to receive early access to new divine collections and exclusive members-only offers.</p>
-            <form className="flex justify-center" style={{ gap: '1.5rem', flexWrap: 'wrap' }} onSubmit={e => e.preventDefault()}>
-               <input type="email" required placeholder="Enter your email address" className="input-field" style={{ flex: '1 1 350px', padding: '1.4rem 2.5rem', borderRadius: '50px' }} />
-               <Button type="submit" variant="primary" style={{ padding: '1.4rem 4.5rem', borderRadius: '50px' }}>Subscribe</Button>
-            </form>
+      {/* Newsletter Section */}
+      <section className="section-padding bg-ivory" style={{ borderTop: '1px solid var(--color-gray-border)' }}>
+         <div className="container">
+            <div className="card glass text-center" style={{ padding: 'clamp(3rem, 8vw, 6rem)', maxWidth: '900px', margin: '0 auto', border: '1px solid var(--color-gold)', borderRadius: 'var(--radius-xl)' }}>
+               <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Join the Divine Circle</h2>
+               <p style={{ color: 'var(--color-gray-text)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 3rem', lineHeight: '1.7' }}>
+                  Subscribe to receive exclusive previews of our latest arrivals, divine stories, and bespoke offers straight to your inbox.
+               </p>
+               
+               {subscribed ? (
+                 <div className="animate-fade-in" style={{ backgroundColor: 'var(--color-success)', color: 'white', padding: '2rem', borderRadius: 'var(--radius-md)', display: 'inline-block' }}>
+                    <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Welcome to the Circle!</h3>
+                    <p style={{ fontSize: '1rem', opacity: 0.9 }}>Use code <strong>WELCOME10</strong> for 10% off your next divine acquisition.</p>
+                 </div>
+               ) : (
+                 <form 
+                   onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!subscribeEmail) return;
+                      setSubmitting(true);
+                      try {
+                        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/subscribe`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ email: subscribeEmail })
+                        });
+                        if (res.ok) setSubscribed(true);
+                      } catch (err) {
+                        console.error(err);
+                      } finally {
+                        setSubmitting(false);
+                      }
+                   }}
+                   className="flex gap-4" style={{ flexWrap: 'wrap', justifyContent: 'center' }}
+                 >
+                    <input 
+                      required
+                      type="email" 
+                      placeholder="Enter your email address" 
+                      value={subscribeEmail}
+                      onChange={(e) => setSubscribeEmail(e.target.value)}
+                      className="input-field" 
+                      style={{ flex: '1 1 350px', padding: '1.2rem 2rem', borderRadius: '50px', fontSize: '1.1rem' }} 
+                    />
+                    <Button 
+                      type="submit" 
+                      disabled={submitting}
+                      style={{ padding: '1.2rem 4rem', borderRadius: '50px', fontSize: '1.1rem', backgroundColor: 'var(--color-primary)', color: '#fff', border: 'none' }}
+                    >
+                       {submitting ? 'JOINING...' : 'SUBSCRIBE'}
+                    </Button>
+                 </form>
+               )}
+            </div>
          </div>
       </section>
 
