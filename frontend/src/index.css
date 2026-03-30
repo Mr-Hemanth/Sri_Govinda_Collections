@@ -152,6 +152,12 @@ img {
   cursor: grabbing !important;
 }
 
+@media (max-width: 768px) {
+  .mobile-only-full-width {
+    width: 100% !important;
+  }
+}
+
 /* Responsive Display Utilities */
 @media (max-width: 1024px) {
   .desktop-nav { display: none !important; }

@@ -51,66 +51,65 @@ export default function Shop() {
 
   return (
     <div className="container section-padding animate-fade-in">
-      <div className="flex-col max-w-standard" style={{ marginBottom: '8rem', gap: '5rem' }}>
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(3rem, 6vw, 5rem)', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Our Masterpieces</h1>
-          <p className="text-balance" style={{ color: 'var(--color-gray-dark)', maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', lineHeight: '1.6' }}>Explore our hand-curated selection of divine jewelry and traditional articles, crafted for generations to come.</p>
+      <div className="flex-col" style={{ marginBottom: '6rem', gap: '4rem' }}>
+        <div className="mobile-center-header" style={{ textAlign: 'center' }}>
+          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.5rem, 6vw, 5rem)', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Our Masterpieces</h1>
+          <p className="text-balance" style={{ color: 'var(--color-gray-dark)', maxWidth: '700px', margin: '0 auto', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', lineHeight: '1.6' }}>Explore our hand-curated selection of divine jewelry and traditional articles, crafted for generations to come.</p>
         </div>
         
-        <div className="flex gap-6 items-center justify-center p-cont" style={{ 
-          flexDirection: 'row',
-          flexWrap: 'wrap', 
+        <div className="flex gap-6 items-center justify-center mobile-center-header" style={{ 
           backgroundColor: 'var(--color-ivory)', 
-          padding: '2.5rem', 
+          padding: 'clamp(1.5rem, 3vw, 2.5rem)', 
           borderRadius: 'var(--radius-lg)', 
           border: '1px solid var(--color-gold)',
           width: '100%',
-          boxShadow: '0 15px 35px rgba(0,0,0,0.03)'
+          boxShadow: '0 15px 35px rgba(0,0,0,0.03)',
+          flexWrap: 'wrap'
         }}>
           
           <form onSubmit={handleSearch} style={{ 
             position: 'relative', 
             display: 'flex', 
-            flex: '1 1 400px',
-            maxWidth: '100%'
+            flex: '1 1 350px',
+            width: '100%'
           }}>
             <Search size={20} style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-gold)' }} />
             <input 
               type="text" 
-              placeholder="Search by name or category..." 
+              placeholder="Search masterpieces..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="input-field"
               style={{ paddingLeft: '3.5rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '1rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
             />
-            <Button type="submit" style={{ position: 'absolute', right: '6px', top: '6px', bottom: '6px', borderRadius: '50px', padding: '0 1rem', fontSize: '0.85rem' }}>Search</Button>
+            <Button type="submit" style={{ position: 'absolute', right: '6px', top: '6px', bottom: '6px', borderRadius: '50px', padding: '0 1.2rem', fontSize: '0.85rem' }}>Search</Button>
           </form>
           
-          <div className="flex gap-2" style={{ display: 'flex', flex: '1 1 100%', width: '100%' }}>
-            <div className="flex items-center" style={{ flex: 1 }}>
-               <select 
-                 value={category} 
-                 onChange={(e) => setCategory(e.target.value)}
-                 className="input-field" 
-                 style={{ cursor: 'pointer', padding: '0.75rem 1rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '0.9rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
-               >
-                 <option disabled value="">Category</option>
-                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
-               </select>
-            </div>
+          <div className="flex gap-3" style={{ flex: '1 1 auto', flexWrap: 'wrap', justifyContent: 'center' }}>
+             <div style={{ flex: '1 1 160px' }}>
+                <select 
+                  value={category} 
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="input-field" 
+                  style={{ cursor: 'pointer', padding: '0.75rem 1rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '0.9rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
+                >
+                  <option value="All">All Categories</option>
+                  {categories.filter(c => c !== 'All').map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+             </div>
 
-            <div className="flex items-center" style={{ flex: 1 }}>
-               <select 
-                 value={sort} 
-                 onChange={(e) => setSort(e.target.value)}
-                 className="input-field" 
-                 style={{ cursor: 'pointer', padding: '0.75rem 1rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '0.9rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
-               >
-                 <option value="newest">Newest</option>
-                 <option value="price-low">Price: Low</option>
-                 <option value="price-high">Price: High</option>
-               </select>
-            </div>
+             <div style={{ flex: '1 1 160px' }}>
+                <select 
+                  value={sort} 
+                  onChange={(e) => setSort(e.target.value)}
+                  className="input-field" 
+                  style={{ cursor: 'pointer', padding: '0.75rem 1rem', borderRadius: '50px', backgroundColor: 'white', fontSize: '0.9rem', width: '100%', border: '1px solid var(--color-gray-border)' }}
+                >
+                  <option value="newest">Newest</option>
+                  <option value="price-low">Price: Low</option>
+                  <option value="price-high">Price: High</option>
+                </select>
+             </div>
           </div>
         </div>
       </div>

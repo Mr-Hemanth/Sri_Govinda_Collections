@@ -46,20 +46,38 @@ export default function Home() {
   const [startX, setStartX] = useState(0);
   const [scrollLeftState, setScrollLeftState] = useState(0);
 
+  // Auto-Play Feature
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isDown) {
+        const container = document.getElementById('category-carousel');
+        if (container) {
+          const maxScroll = container.scrollWidth - container.clientWidth;
+          if (container.scrollLeft >= maxScroll - 10) {
+            container.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            container.scrollBy({ left: 352, behavior: 'smooth' });
+          }
+        }
+      }
+    }, 5000); // Slide every 5 seconds
+    return () => clearInterval(interval);
+  }, [isDown]);
+
   useEffect(() => {
     const container = document.getElementById('category-carousel');
     if (!container) return;
     
     const handleScroll = () => {
       const scrollPos = container.scrollLeft;
-      const cardWidth = 352; // 320px width + 32px gap
+      const cardWidth = 352; 
       const index = Math.round(scrollPos / cardWidth);
-      setActiveSlide(index);
+      if (index !== activeSlide) setActiveSlide(index);
     };
 
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activeSlide]);
 
   const handleMouseDown = (e) => {
     const container = document.getElementById('category-carousel');
@@ -70,9 +88,9 @@ export default function Home() {
   };
 
   const handleMouseLeaveOrUp = () => {
-    const container = document.getElementById('category-carousel');
     setIsDown(false);
-    container.classList.remove('grabbing');
+    const container = document.getElementById('category-carousel');
+    if (container) container.classList.remove('grabbing');
   };
 
   const handleMouseMove = (e) => {
@@ -80,7 +98,7 @@ export default function Home() {
     e.preventDefault();
     const container = document.getElementById('category-carousel');
     const x = e.pageX - container.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed
+    const walk = (x - startX) * 2; 
     container.scrollLeft = scrollLeftState - walk;
   };
 
@@ -194,7 +212,7 @@ export default function Home() {
               <h2 style={{ fontSize: 'var(--font-h1)', color: 'var(--color-primary)' }}>Featured Arrivals</h2>
               <p style={{ color: 'var(--color-gray-dark)', fontSize: 'var(--font-base)', marginTop: '0.5rem' }}>Handpicked masterpieces for your selection.</p>
             </div>
-            <div className="flex justify-center" style={{ width: window.innerWidth < 768 ? '100%' : 'auto' }}>
+            <div className="flex justify-center mobile-only-full-width">
               <Link to="/shop">
                 <Button variant="outline" style={{ padding: '1rem 3rem', borderRadius: '50px', fontSize: 'var(--font-sm)' }}>View All Products</Button>
               </Link>
