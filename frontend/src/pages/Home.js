@@ -4,6 +4,7 @@ import { API_BASE_URL } from '../apiConfig';
 import HeroBanner from '../components/ui/HeroBanner';
 import TrustBadges from '../components/ui/TrustBadges';
 import ProductCard from '../components/ui/ProductCard';
+import { Sparkles, Waves, Gem, Gift, ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '../components/ui/Button';
 
 export default function Home() {
@@ -32,11 +33,21 @@ export default function Home() {
   }, []);
 
   const categories = [
-    { name: '1 Gram Gold', img: 'https://images.unsplash.com/photo-1601121141461-9d6647b0a002?auto=format&fit=crop&q=80&w=600', desc: 'Divine handcrafted pieces inspired by ancient architecture.' },
-    { name: 'German Silver', img: 'https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?auto=format&fit=crop&q=80&w=600', desc: 'Antique finish home decor and traditional gifting articles.' },
-    { name: 'Panchalohas', img: 'https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3?auto=format&fit=crop&q=80&w=600', desc: 'Sacred five-metal alloy idols and jewelry for spiritual aura.' },
-    { name: 'Gift Articles', img: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600', desc: 'Exquisite idols and souvenirs wrapped in elegance.' }
+    { name: '1 Gram Gold', icon: <Sparkles size={40} />, desc: 'Antique finish traditional necklaces and temple jewelry.' },
+    { name: 'German Silver', icon: <Waves size={40} />, desc: 'Premium silver urulis, deepams, and traditional home decor.' },
+    { name: 'Panchalohas', icon: <Gem size={40} />, desc: 'Exquisite five-metal alloy idols with a sacred aura.' },
+    { name: 'Gift Articles', icon: <Gift size={40} />, desc: 'Luxury boxed artifacts and souvenirs for every celebration.' }
   ];
+
+  const scrollCarousel = (direction) => {
+    const container = document.getElementById('category-carousel');
+    const scrollAmount = 350;
+    if (direction === 'left') {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="animate-fade-in" style={{ backgroundColor: 'var(--color-ivory)' }}>
@@ -46,26 +57,49 @@ export default function Home() {
       {/* Trust Badges */}
       <TrustBadges />
 
-      {/* Category Section */}
-      <section className="section-padding">
+      {/* Category Carousel Section */}
+      <section className="section-padding" style={{ overflow: 'hidden' }}>
         <div className="container">
-          <header style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <header style={{ textAlign: 'center', marginBottom: '4rem', position: 'relative' }}>
             <h2 style={{ fontSize: 'var(--font-title)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Exquisite Collections</h2>
             <div style={{ width: '80px', height: '3px', background: 'var(--color-primary)', margin: '0 auto 1.5rem' }}></div>
             <p style={{ color: 'var(--color-gray-text)', maxWidth: '600px', margin: '0 auto', fontSize: 'var(--font-base)' }}>
               Each piece is a testament to timeless craftsmanship and divine elegance.
             </p>
+            
+            {/* Carousel Controls */}
+            <div className="carousel-controls desktop-nav" style={{ position: 'absolute', right: 0, bottom: 0, display: 'flex', gap: '1rem' }}>
+               <button onClick={() => scrollCarousel('left')} className="scroll-btn" style={{ background: 'var(--color-primary)', border: 'none', color: 'white', width: '45px', height: '45px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ChevronLeft size={24} /></button>
+               <button onClick={() => scrollCarousel('right')} className="scroll-btn" style={{ background: 'var(--color-primary)', border: 'none', color: 'white', width: '45px', height: '45px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ChevronRight size={24} /></button>
+            </div>
           </header>
       
-          <div className="grid gap-12" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <div id="category-carousel" className="flex gap-8 overflow-x-auto hide-scrollbar" style={{ paddingBottom: '2rem', scrollSnapType: 'x mandatory' }}>
             {categories.map(cat => (
-              <Link key={cat.name} to={`/shop?category=${encodeURIComponent(cat.name)}`} className="card" style={{ height: '500px', position: 'relative', overflow: 'hidden', padding: 0 }}>
-                 <div style={{ height: '100%', overflow: 'hidden' }}>
-                   <img src={cat.img} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 1s var(--transition-slow)' }} className="hover-scale" />
-                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '3rem 2rem', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%)', color: 'white' }}>
-                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--font-h2)', marginBottom: '1rem', color: 'var(--color-primary)' }}>{cat.name}</h3>
-                      <p style={{ fontSize: 'var(--font-sm)', color: 'white', lineHeight: '1.5', opacity: 0.9 }}>{cat.desc}</p>
-                   </div>
+              <Link key={cat.name} to={`/shop?category=${encodeURIComponent(cat.name)}`} className="category-card-premium" style={{ flex: '0 0 320px', scrollSnapAlign: 'start' }}>
+                 <div className="inner-card flex-col items-center text-center p-12" style={{ 
+                    height: '400px', 
+                    background: 'linear-gradient(135deg, var(--color-white) 0%, var(--color-ivory) 100%)',
+                    border: '1px solid rgba(212, 175, 55, 0.3)',
+                    borderRadius: 'var(--radius-lg)',
+                    justifyContent: 'center',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                 }}>
+                    {/* Royal Accents */}
+                    <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '80px', height: '80px', background: 'var(--color-gold)', opacity: 0.1, borderRadius: '50%' }}></div>
+                    <div style={{ position: 'absolute', bottom: '-20px', left: '-20px', width: '60px', height: '60px', background: 'var(--color-gold)', opacity: 0.1, borderRadius: '50%' }}></div>
+
+                    <div style={{ color: 'var(--color-primary)', marginBottom: '2.5rem', background: 'var(--color-ivory)', padding: '1.5rem', borderRadius: '50%', border: '1px solid var(--color-gold)' }}>
+                       {cat.icon}
+                    </div>
+                    <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', color: 'var(--color-primary)', marginBottom: '1.5rem', letterSpacing: '1px' }}>{cat.name}</h3>
+                    <p style={{ fontSize: '0.95rem', color: 'var(--color-gray-dark)', lineHeight: '1.6', maxWidth: '240px' }}>{cat.desc}</p>
+                    
+                    <div className="view-link" style={{ marginTop: '2.5rem', color: 'var(--color-primary)', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '2px', textTransform: 'uppercase', borderBottom: '2px solid transparent', transition: 'border 0.3s' }}>
+                       Explore Now
+                    </div>
                  </div>
               </Link>
             ))}
@@ -90,10 +124,31 @@ export default function Home() {
               [...Array(4)].map((_, i) => (
                 <div key={i} className="animate-pulse" style={{ height: '400px', backgroundColor: '#eee', borderRadius: '12px' }}></div>
               ))
-            ) : (
+            ) : featuredProducts.length > 0 ? (
               featuredProducts.map(p => (
                 <ProductCard key={p.id} product={p} />
               ))
+            ) : (
+                <div className="flex-col items-center text-center" style={{ gridColumn: '1 / -1', padding: '4rem 0', gap: '2rem' }}>
+                    <div style={{ 
+                        width: '100%', 
+                        maxWidth: '800px', 
+                        height: '400px', 
+                        backgroundImage: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(https://images.unsplash.com/photo-1512213063672-d4ff2ff841e2?auto=format&fit=crop&q=80&w=1200)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: 'var(--radius-lg)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: 'var(--shadow-lg)'
+                    }}>
+                        <div style={{ color: 'white', padding: '2rem' }}>
+                            <h3 style={{ fontSize: '2rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)' }}>Curating Masterpieces</h3>
+                            <p style={{ fontSize: '1.1rem', opacity: 0.9 }}>Our artisans are crafting new arrivals. Stay tuned for the latest in 1 Gram Gold & German Silver.</p>
+                        </div>
+                    </div>
+                </div>
             )}
           </div>
         </div>
@@ -112,11 +167,17 @@ export default function Home() {
              </Link>
            </div>
         </div>
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.3, backgroundImage: 'url(https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&q=80&w=1600)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }}></div>
+         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.25, backgroundImage: 'url(https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&q=80&w=1600)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }}></div>
       </section>
 
       {/* Newsletter Section */}
-      <section className="section-padding bg-ivory">
+      <section className="section-padding bg-ivory" style={{ 
+        position: 'relative', 
+        backgroundImage: 'linear-gradient(rgba(253, 252, 248, 0.9), rgba(253, 252, 248, 0.9)), url(https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&q=80&w=1600)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}>
          <div className="container">
             <div className="card glass text-center" style={{ padding: 'clamp(3rem, 5vw, 6rem)', maxWidth: '900px', margin: '0 auto', border: '1px solid var(--color-primary)' }}>
                <h2 style={{ fontSize: 'var(--font-h2)', color: 'var(--color-primary)', marginBottom: '1.5rem' }}>Join the Divine Circle</h2>

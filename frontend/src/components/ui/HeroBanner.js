@@ -3,7 +3,15 @@ import Button from './Button';
 
 export default function HeroBanner() {
   return (
-    <div className="hero-banner" style={{ backgroundColor: '#000000', color: 'white', position: 'relative', overflow: 'hidden' }}>
+    <div className="hero-banner" style={{ 
+      backgroundColor: '#000', 
+      backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=1600)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      color: 'white', 
+      position: 'relative', 
+      overflow: 'hidden' 
+    }}>
       {/* Subtle background effect */}
       <div className="container section-padding" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
         <h1 className="animate-fade-in text-shadow" style={{ fontStyle: 'italic', marginBottom: '1.5rem', fontWeight: '700', color: 'var(--color-gold-light)' }}>
